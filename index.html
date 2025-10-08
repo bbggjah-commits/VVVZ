@@ -24,7 +24,7 @@
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
             background: #ffffff;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
@@ -58,9 +58,15 @@
 
         .content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 30px;
             padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
         }
 
         .key-section {
@@ -69,6 +75,7 @@
             border-radius: 15px;
             border: 1px solid #e9ecef;
             transition: transform 0.3s ease;
+            text-align: center;
         }
 
         .key-section:hover {
@@ -78,6 +85,7 @@
         .section-header {
             display: flex;
             align-items: center;
+            justify-content: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #dee2e6;
@@ -94,49 +102,122 @@
             font-size: 1.4rem;
         }
 
-        .key-list {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 10px;
+        .discord-contact {
+            background: #5865F2;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: background 0.3s ease;
         }
 
-        .key-item {
-            background: #ffffff;
-            padding: 12px 15px;
-            margin-bottom: 10px;
+        .discord-contact:hover {
+            background: #4752C4;
+        }
+
+        .temp-key-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
             border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .temp-key-btn:hover {
+            background: #218838;
+        }
+
+        .temp-key-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .steps-container {
+            display: none;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .step {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             border: 1px solid #e9ecef;
+        }
+
+        .step-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
+            margin-bottom: 10px;
         }
 
-        .key-item:hover {
-            border-color: #6c757d;
+        .step-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .step-btn:hover:not(:disabled) {
+            background: #0056b3;
+        }
+
+        .step-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .timer {
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        .completed {
+            color: #28a745;
+        }
+
+        .key-result {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
         }
 
         .key-code {
             font-family: 'Courier New', monospace;
             font-weight: bold;
-            color: #495057;
+            font-size: 1.2rem;
+            margin: 10px 0;
         }
 
-        .key-type {
-            font-size: 0.85rem;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-
-        .type-vip {
+        .cooldown-message {
             background: #fff3cd;
             color: #856404;
-        }
-
-        .type-temp {
-            background: #d1ecf1;
-            color: #0c5460;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
         }
 
         .stats {
@@ -174,69 +255,6 @@
             font-size: 0.9rem;
         }
 
-        /* شريط التمرير المخصص */
-        .key-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .key-list::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .key-list::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 10px;
-        }
-
-        .key-list::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        /* التصميم المتجاوب */
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-                padding: 20px;
-                gap: 20px;
-            }
-            
-            .header {
-                padding: 20px;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                border-radius: 15px;
-            }
-            
-            .header {
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .content {
-                padding: 15px;
-            }
-            
-            .key-section {
-                padding: 15px;
-            }
-        }
-
         /* تأثيرات الحركة */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -245,22 +263,6 @@
 
         .key-section {
             animation: fadeIn 0.6s ease forwards;
-        }
-
-        .key-section:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .stat-card {
-            animation: fadeIn 0.6s ease forwards;
-        }
-
-        .stat-card:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .stat-card:nth-child(3) {
-            animation-delay: 0.2s;
         }
     </style>
 </head>
@@ -279,8 +281,16 @@
                     <i class="fas fa-crown"></i>
                     <h2>المفاتيح المدفوعة (VIB)</h2>
                 </div>
-                <div class="key-list" id="vipKeys">
-                    <!-- سيتم إضافة المفاتيح عبر JavaScript -->
+                <p style="color: #6c757d; margin-bottom: 20px;">للحصول على مفتاح مدفوع، يرجى التواصل مع المطور</p>
+                
+                <a href="https://discord.com/users/1_ing1" class="discord-contact" target="_blank">
+                    <i class="fab fa-discord"></i>
+                    التكلم مع 1_ing1 على الديسكورد
+                </a>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 10px; color: #856404;">
+                    <i class="fas fa-info-circle"></i>
+                    المفاتيح المدفوعة تعمل بشكل دائم وعلى جهاز واحد فقط
                 </div>
             </div>
 
@@ -288,139 +298,273 @@
             <div class="key-section">
                 <div class="section-header">
                     <i class="fas fa-clock"></i>
-                    <h2>المفاتيح المؤقتة (12 ساعة)</h2>
+                    <h2>المفاتيح المؤقتة</h2>
                 </div>
-                <div class="key-list" id="tempKeys">
-                    <!-- سيتم إضافة المفاتيح عبر JavaScript -->
+                <p style="color: #6c757d; margin-bottom: 20px;">احصل على مفتاح مجاني لمدة 12 ساعة</p>
+                
+                <button class="temp-key-btn" id="getTempKeyBtn">
+                    <i class="fas fa-download"></i>
+                    الحصول على مفتاح مؤقت
+                </button>
+
+                <div class="cooldown-message" id="cooldownMessage">
+                    <i class="fas fa-clock"></i>
+                    <span id="cooldownTimer">يمكنك طلب مفتاح جديد بعد: 12:00:00</span>
+                </div>
+
+                <!-- خطوات الحصول على المفتاح -->
+                <div class="steps-container" id="stepsContainer">
+                    <div class="step">
+                        <div class="step-header">
+                            <span>1. شاهد الإعلان</span>
+                            <button class="step-btn" id="adStepBtn" onclick="startStep(1)">
+                                ابدأ <span class="timer" id="timer1">10</span>s
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span>2. اشترك في القناة</span>
+                            <button class="step-btn" id="subscribeStepBtn" onclick="startStep(2)" disabled>
+                                ابدأ <span class="timer" id="timer2">10</span>s
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span>3. انضم إلى المجتمع</span>
+                            <button class="step-btn" id="discordStepBtn" onclick="joinDiscord()">
+                                انضم الآن
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- نتيجة المفتاح -->
+                <div class="key-result" id="keyResult">
+                    <i class="fas fa-key"></i>
+                    <h3>مبروك! هذا هو مفتاحك:</h3>
+                    <div class="key-code" id="generatedKey">TEMP-XXXX-XXXX-XXXX</div>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">
+        يعمل لمدة 12 ساعة وعلى جهاز واحد فقط
+                    </p>
                 </div>
             </div>
         </div>
 
         <div class="stats">
             <div class="stat-card">
-                <i class="fas fa-key"></i>
-                <div class="stat-number">100</div>
-                <div class="stat-label">مفتاح مدفوع</div>
+                <i class="fas fa-crown"></i>
+                <div class="stat-number">مدفوع</div>
+                <div class="stat-label">مفاتيح دائمة</div>
             </div>
             <div class="stat-card">
-                <i class="fas fa-hourglass-half"></i>
-                <div class="stat-number">100</div>
-                <div class="stat-label">مفتاح مؤقت</div>
+                <i class="fas fa-clock"></i>
+                <div class="stat-number">12 ساعة</div>
+                <div class="stat-label">صلاحية المؤقت</div>
             </div>
             <div class="stat-card">
-                <i class="fas fa-infinity"></i>
-                <div class="stat-number">∞</div>
-                <div class="stat-label">صلاحية المفاتيح المدفوعة</div>
+                <i class="fas fa-desktop"></i>
+                <div class="stat-number">جهاز واحد</div>
+                <div class="stat-label">لكل مفتاح</div>
             </div>
         </div>
     </div>
 
     <script>
-        // المفاتيح المدفوعة VIB (100 مفتاح)
-        const vipKeys = [
-            "VIB-8294-7153-2468", "VIB-5731-6802-9457", "VIB-4297-1865-7032",
-            "VIB-8642-1397-5280", "VIB-2579-6314-0893", "VIB-7038-5921-4685",
-            "VIB-9462-8153-7204", "VIB-3851-7294-0618", "VIB-6194-2835-7106",
-            "VIB-8426-5971-0348", "VIB-1753-9642-8307", "VIB-5087-3162-9475",
-            "VIB-9631-4852-7106", "VIB-7248-0395-6172", "VIB-3962-8714-5203",
-            "VIB-1583-6429-0751", "VIB-8305-2974-6148", "VIB-4729-6158-3042",
-            "VIB-6190-8743-2516", "VIB-2846-7319-5084", "VIB-9573-2048-6139",
-            "VIB-6318-4927-0851", "VIB-4097-5826-3194", "VIB-7261-9854-0372",
-            "VIB-1946-8735-2105", "VIB-5632-8194-7026", "VIB-8472-0395-1618",
-            "VIB-3196-7542-8021", "VIB-6852-4179-0326", "VIB-9327-1548-6021",
-            "VIB-4781-6295-3104", "VIB-2159-6834-7012", "VIB-8643-0175-2928",
-            "VIB-5972-4813-0659", "VIB-3418-9625-7104", "VIB-7295-1864-0312",
-            "VIB-4836-2197-5601", "VIB-8164-3952-7018", "VIB-2649-5731-8024",
-            "VIB-9375-2814-6039", "VIB-6524-1893-7106", "VIB-3197-4852-0614",
-            "VIB-8462-5731-9025", "VIB-5739-2148-6027", "VIB-2816-4953-7108",
-            "VIB-9347-5621-8039", "VIB-6582-4193-7025", "VIB-3179-2648-5102",
-            "VIB-8452-1937-6024", "VIB-5927-4813-0651", "VIB-3648-2197-5021",
-            "VIB-8194-3752-6018", "VIB-2739-5841-6027", "VIB-9462-8153-7201",
-            "VIB-3851-7294-0612", "VIB-6194-2835-7109", "VIB-8426-5971-0341",
-            "VIB-1753-9642-8302", "VIB-5087-3162-9478", "VIB-9631-4852-7109",
-            "VIB-7248-0395-6175", "VIB-3962-8714-5206", "VIB-1583-6429-0754",
-            "VIB-8305-2974-6141", "VIB-4729-6158-3045", "VIB-6190-8743-2519",
-            "VIB-2846-7319-5087", "VIB-9573-2048-6132", "VIB-6318-4927-0854",
-            "VIB-4097-5826-3197", "VIB-7261-9854-0375", "VIB-1946-8735-2108",
-            "VIB-5632-8194-7029", "VIB-8472-0395-1611", "VIB-3196-7542-8024",
-            "VIB-6852-4179-0329", "VIB-9327-1548-6024", "VIB-4781-6295-3107",
-            "VIB-2159-6834-7015", "VIB-8643-0175-2921", "VIB-5972-4813-0652",
-            "VIB-3418-9625-7107", "VIB-7295-1864-0315", "VIB-4836-2197-5604",
-            "VIB-8164-3952-7011", "VIB-2649-5731-8027", "VIB-9375-2814-6032",
-            "VIB-6524-1893-7109", "VIB-3197-4852-0617", "VIB-8462-5731-9028",
-            "VIB-5739-2148-6022", "VIB-2816-4953-7101", "VIB-9347-5621-8032",
-            "VIB-6582-4193-7028", "VIB-3179-2648-5105", "VIB-8452-1937-6027",
-            "VIB-5927-4813-0654", "VIB-3648-2197-5024", "VIB-8194-3752-6011",
-            "VIB-2739-5841-6022"
-        ];
-
-        // المفاتيح المؤقتة (100 مفتاح)
+        // المفاتيح المؤقتة
         const tempKeys = [
             "TEMP-7248-1963-5081", "TEMP-3851-6294-7102", "TEMP-9624-8153-4073",
             "TEMP-5731-4802-6194", "TEMP-8294-7153-2465", "TEMP-4297-1865-7035",
             "TEMP-8642-1397-5283", "TEMP-2579-6314-0896", "TEMP-7038-5921-4688",
-            "TEMP-9462-8153-7207", "TEMP-6194-2835-7103", "TEMP-8426-5971-0345",
-            "TEMP-1753-9642-8304", "TEMP-5087-3162-9472", "TEMP-9631-4852-7103",
-            "TEMP-3962-8714-5209", "TEMP-1583-6429-0757", "TEMP-8305-2974-6145",
-            "TEMP-4729-6158-3048", "TEMP-6190-8743-2513", "TEMP-2846-7319-5082",
-            "TEMP-9573-2048-6135", "TEMP-6318-4927-0857", "TEMP-4097-5826-3192",
-            "TEMP-7261-9854-0378", "TEMP-1946-8735-2102", "TEMP-5632-8194-7023",
-            "TEMP-8472-0395-1614", "TEMP-3196-7542-8027", "TEMP-6852-4179-0323",
-            "TEMP-9327-1548-6027", "TEMP-4781-6295-3102", "TEMP-2159-6834-7018",
-            "TEMP-8643-0175-2925", "TEMP-5972-4813-0656", "TEMP-3418-9625-7102",
-            "TEMP-7295-1864-0318", "TEMP-4836-2197-5607", "TEMP-8164-3952-7015",
-            "TEMP-2649-5731-8022", "TEMP-9375-2814-6035", "TEMP-6524-1893-7103",
-            "TEMP-3197-4852-0612", "TEMP-8462-5731-9022", "TEMP-5739-2148-6025",
-            "TEMP-2816-4953-7105", "TEMP-9347-5621-8035", "TEMP-6582-4193-7022",
-            "TEMP-3179-2648-5108", "TEMP-8452-1937-6022", "TEMP-5927-4813-0657",
-            "TEMP-3648-2197-5027", "TEMP-8194-3752-6015", "TEMP-2739-5841-6025",
-            "TEMP-7248-1963-5084", "TEMP-3851-6294-7105", "TEMP-9624-8153-4076",
-            "TEMP-5731-4802-6197", "TEMP-8294-7153-2462", "TEMP-4297-1865-7038",
-            "TEMP-8642-1397-5286", "TEMP-2579-6314-0899", "TEMP-7038-5921-4682",
-            "TEMP-9462-8153-7202", "TEMP-6194-2835-7108", "TEMP-8426-5971-0342",
-            "TEMP-1753-9642-8309", "TEMP-5087-3162-9479", "TEMP-9631-4852-7108",
-            "TEMP-3962-8714-5202", "TEMP-1583-6429-0752", "TEMP-8305-2974-6142",
-            "TEMP-4729-6158-3049", "TEMP-6190-8743-2518", "TEMP-2846-7319-5089",
-            "TEMP-9573-2048-6138", "TEMP-6318-4927-0852", "TEMP-4097-5826-3199",
-            "TEMP-7261-9854-0373", "TEMP-1946-8735-2109", "TEMP-5632-8194-7028",
-            "TEMP-8472-0395-1619", "TEMP-3196-7542-8023", "TEMP-6852-4179-0328",
-            "TEMP-9327-1548-6023", "TEMP-4781-6295-3109", "TEMP-2159-6834-7013",
-            "TEMP-8643-0175-2929", "TEMP-5972-4813-0653", "TEMP-3418-9625-7109",
-            "TEMP-7295-1864-0313", "TEMP-4836-2197-5602", "TEMP-8164-3952-7019",
-            "TEMP-2649-5731-8029", "TEMP-9375-2814-6038", "TEMP-6524-1893-7108",
-            "TEMP-3197-4852-0619"
+            "TEMP-9462-8153-7207", "TEMP-6194-2835-7103", "TEMP-8426-5971-0345"
         ];
 
-        // دالة لعرض المفاتيح
-        function displayKeys() {
-            const vipKeysContainer = document.getElementById('vipKeys');
-            const tempKeysContainer = document.getElementById('tempKeys');
+        let usedKeys = new Set();
+        let usedDevices = new Set();
+        let lastKeyTime = 0;
+        const COOLDOWN_TIME = 12 * 60 * 60 * 1000; // 12 ساعة
 
-            // عرض المفاتيح المدفوعة
-            vipKeys.forEach(key => {
-                const keyElement = document.createElement('div');
-                keyElement.className = 'key-item';
-                keyElement.innerHTML = `
-                    <span class="key-code">${key}</span>
-                    <span class="key-type type-vip">مدفوع</span>
-                `;
-                vipKeysContainer.appendChild(keyElement);
-            });
-
-            // عرض المفاتيح المؤقتة
-            tempKeys.forEach(key => {
-                const keyElement = document.createElement('div');
-                keyElement.className = 'key-item';
-                keyElement.innerHTML = `
-                    <span class="key-code">${key}</span>
-                    <span class="key-type type-temp">12 ساعة</span>
-                `;
-                tempKeysContainer.appendChild(keyElement);
-            });
+        // إنشاء معرف فريد للجهاز
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('deviceId');
+            if (!deviceId) {
+                deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('deviceId', deviceId);
+            }
+            return deviceId;
         }
 
-        // تشغيل الدالة عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', displayKeys);
+        // التحقق من الوقت المتبقي
+        function checkCooldown() {
+            const now = Date.now();
+            const timePassed = now - lastKeyTime;
+            
+            if (lastKeyTime && timePassed < COOLDOWN_TIME) {
+                const remaining = COOLDOWN_TIME - timePassed;
+                return remaining;
+            }
+            return 0;
+        }
+
+        // تحديث عرض الوقت المتبقي
+        function updateCooldownDisplay() {
+            const remaining = checkCooldown();
+            const cooldownMessage = document.getElementById('cooldownMessage');
+            const cooldownTimer = document.getElementById('cooldownTimer');
+            const getTempKeyBtn = document.getElementById('getTempKeyBtn');
+
+            if (remaining > 0) {
+                const hours = Math.floor(remaining / (1000 * 60 * 60));
+                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+                
+                cooldownTimer.textContent = `يمكنك طلب مفتاح جديد بعد: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                cooldownMessage.style.display = 'block';
+                getTempKeyBtn.disabled = true;
+            } else {
+                cooldownMessage.style.display = 'none';
+                getTempKeyBtn.disabled = false;
+            }
+        }
+
+        // بدء الخطوة
+        function startStep(stepNumber) {
+            const timerElement = document.getElementById(`timer${stepNumber}`);
+            const button = document.getElementById([
+                'adStepBtn', 
+                'subscribeStepBtn', 
+                'discordStepBtn'
+            ][stepNumber - 1]);
+
+            let timeLeft = 10;
+            button.disabled = true;
+
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    button.innerHTML = '<i class="fas fa-check"></i> مكتمل';
+                    button.classList.add('completed');
+                    
+                    // تفعيل الخطوة التالية
+                    if (stepNumber < 3) {
+                        const nextButton = document.getElementById([
+                            'subscribeStepBtn', 
+                            'discordStepBtn'
+                        ][stepNumber - 1]);
+                        nextButton.disabled = false;
+                    }
+                    
+                    // إذا كانت هذه هي الخطوة الأخيرة
+                    if (stepNumber === 2) {
+                        checkAllStepsCompleted();
+                    }
+                }
+            }, 1000);
+        }
+
+        // الانضمام إلى الديسكورد
+        function joinDiscord() {
+            window.open('https://discord.gg/8h8xtAe6YT', '_blank');
+            const button = document.getElementById('discordStepBtn');
+            button.innerHTML = '<i class="fas fa-check"></i> انضممت';
+            button.classList.add('completed');
+            button.disabled = true;
+            
+            checkAllStepsCompleted();
+        }
+
+        // التحقق من اكتمال جميع الخطوات
+        function checkAllStepsCompleted() {
+            const adCompleted = document.getElementById('adStepBtn').classList.contains('completed');
+            const subscribeCompleted = document.getElementById('subscribeStepBtn').classList.contains('completed');
+            const discordCompleted = document.getElementById('discordStepBtn').classList.contains('completed');
+
+            if (adCompleted && subscribeCompleted && discordCompleted) {
+                generateTempKey();
+            }
+        }
+
+        // إنشاء مفتاح مؤقت
+        function generateTempKey() {
+            const deviceId = getDeviceId();
+            const now = Date.now();
+            
+            // التحقق من الوقت المتبقي
+            const cooldownRemaining = checkCooldown();
+            if (cooldownRemaining > 0) {
+                alert('يجب الانتظار 12 ساعة قبل طلب مفتاح جديد');
+                return;
+            }
+
+            // البحث عن مفتاح غير مستخدم
+            let availableKey = null;
+            for (const key of tempKeys) {
+                if (!usedKeys.has(key)) {
+                    availableKey = key;
+                    break;
+                }
+            }
+
+            if (availableKey) {
+                usedKeys.add(availableKey);
+                usedDevices.add(deviceId);
+                lastKeyTime = now;
+                
+                // حفظ في localStorage
+                localStorage.setItem('lastKeyTime', now.toString());
+                localStorage.setItem('usedKeys', JSON.stringify(Array.from(usedKeys)));
+                localStorage.setItem('usedDevices', JSON.stringify(Array.from(usedDevices)));
+                
+                // عرض المفتاح
+                document.getElementById('generatedKey').textContent = availableKey;
+                document.getElementById('keyResult').style.display = 'block';
+                
+                // تحديث العرض
+                updateCooldownDisplay();
+            } else {
+                alert('لا توجد مفاتيح متاحة حالياً');
+            }
+        }
+
+        // تحميل البيانات المحفوظة
+        function loadSavedData() {
+            const savedLastKeyTime = localStorage.getItem('lastKeyTime');
+            const savedUsedKeys = localStorage.getItem('usedKeys');
+            const savedUsedDevices = localStorage.getItem('usedDevices');
+            
+            if (savedLastKeyTime) {
+                lastKeyTime = parseInt(savedLastKeyTime);
+            }
+            
+            if (savedUsedKeys) {
+                usedKeys = new Set(JSON.parse(savedUsedKeys));
+            }
+            
+            if (savedUsedDevices) {
+                usedDevices = new Set(JSON.parse(savedUsedDevices));
+            }
+        }
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedData();
+            updateCooldownDisplay();
+            
+            // تحديث العداد كل ثانية
+            setInterval(updateCooldownDisplay, 1000);
+            
+            // زر الحصول على مفتاح مؤقت
+            document.getElementById('getTempKeyBtn').addEventListener('click', function() {
+                document.getElementById('stepsContainer').style.display = 'block';
+                this.style.display = 'none';
+            });
+        });
     </script>
 </body>
-  </html>
+</html>
