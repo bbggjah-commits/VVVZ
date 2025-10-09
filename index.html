@@ -215,9 +215,9 @@
             color: white;
         }
 
-        .step-1 .step-icon { background: #ff6b6b; }
-        .step-2 .step-icon { background: #4ecdc4; }
-        .step-3 .step-icon { background: #45b7d1; }
+        .step-1 .step-icon { background: #000000; } /* تيك توك - أسود */
+        .step-2 .step-icon { background: #FF0000; } /* يوتيوب - أحمر */
+        .step-3 .step-icon { background: #5865F2; } /* ديسكورد - أزرق */
 
         .step-info h3 {
             color: #495057;
@@ -263,12 +263,6 @@
 
         .step-btn.completed {
             background: #28a745;
-        }
-
-        .timer {
-            font-weight: bold;
-            color: #dc3545;
-            font-size: 1.1rem;
         }
 
         .completed-text {
@@ -458,13 +452,13 @@
         <div class="stats">
             <div class="stat-card">
                 <i class="fas fa-crown"></i>
-                <div class="stat-number">مدفوع</div>
+                <div class="stat-number">2</div>
                 <div class="stat-label">مفاتيح دائمة</div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-clock"></i>
-                <div class="stat-number">1 ساعة</div>
-                <div class="stat-label">صلاحية المؤقت</div>
+                <div class="stat-number">50</div>
+                <div class="stat-label">مفاتيح مؤقتة</div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-desktop"></i>
@@ -482,31 +476,31 @@
                 <p>أكمل الخطوات التالية للحصول على مفتاحك المجاني</p>
             </div>
 
-            <!-- الخطوة 1 -->
+            <!-- الخطوة 1 - تيك توك -->
             <div class="step-card step-1">
                 <div class="step-header">
                     <div class="step-icon">
-                        <i class="fas fa-play-circle"></i>
+                        <i class="fab fa-tiktok" style="color: white;"></i>
                     </div>
                     <div class="step-info">
-                        <h3>شاهد الإعلان</h3>
-                        <p>شاهد الإعلان بالكامل لدعم المطور</p>
+                        <h3>تابعني على TikTok</h3>
+                        <p>تابع حساب التيك توك لدعم المطور</p>
                     </div>
                 </div>
                 <div class="step-action">
-                    <span class="timer" id="timer1">10</span>
-                    <button class="step-btn" id="adStepBtn" onclick="startStep(1)">
-                        <i class="fas fa-play"></i>
-                        بدء المشاهدة
+                    <span id="tiktokStatus">في انتظار المتابعة</span>
+                    <button class="step-btn" id="tiktokStepBtn" onclick="openTikTok()">
+                        <i class="fab fa-tiktok"></i>
+                        المتابعة الآن
                     </button>
                 </div>
             </div>
 
-            <!-- الخطوة 2 -->
+            <!-- الخطوة 2 - يوتيوب -->
             <div class="step-card step-2">
                 <div class="step-header">
                     <div class="step-icon">
-                        <i class="fab fa-youtube"></i>
+                        <i class="fab fa-youtube" style="color: white;"></i>
                     </div>
                     <div class="step-info">
                         <h3>اشترك في القناة</h3>
@@ -514,19 +508,19 @@
                     </div>
                 </div>
                 <div class="step-action">
-                    <span class="timer" id="timer2">10</span>
-                    <button class="step-btn" id="subscribeStepBtn" onclick="startStep(2)" disabled>
-                        <i class="fas fa-users"></i>
-                        بدء الاشتراك
+                    <span id="youtubeStatus">في انتظار الاشتراك</span>
+                    <button class="step-btn" id="youtubeStepBtn" onclick="openYouTube()" disabled>
+                        <i class="fab fa-youtube"></i>
+                        الاشتراك الآن
                     </button>
                 </div>
             </div>
 
-            <!-- الخطوة 3 -->
+            <!-- الخطوة 3 - ديسكورد -->
             <div class="step-card step-3">
                 <div class="step-header">
                     <div class="step-icon">
-                        <i class="fab fa-discord"></i>
+                        <i class="fab fa-discord" style="color: white;"></i>
                     </div>
                     <div class="step-info">
                         <h3>انضم إلى المجتمع</h3>
@@ -564,12 +558,31 @@
     </div>
 
     <script>
-        // المفاتيح المؤقتة
+        // المفاتيح المدفوعة (2 مفاتيح)
+        const vipKeys = [
+            "VIB-7294-6158-3042",
+            "VIB-8462-1973-5025"
+        ];
+
+        // المفاتيح المؤقتة (50 مفتاح)
         const tempKeys = [
-            "TEMP-7248-1963-5081", "TEMP-3851-6294-7102", "TEMP-9624-8153-4073",
-            "TEMP-5731-4802-6194", "TEMP-8294-7153-2465", "TEMP-4297-1865-7035",
-            "TEMP-8642-1397-5283", "TEMP-2579-6314-0896", "TEMP-7038-5921-4688",
-            "TEMP-9462-8153-7207", "TEMP-6194-2835-7103", "TEMP-8426-5971-0345"
+            "TEMP-7294-6158-3042", "TEMP-8462-1973-5025", "TEMP-5739-2841-6107",
+            "TEMP-3184-7295-0618", "TEMP-9642-8153-7204", "TEMP-2579-4316-0893",
+            "TEMP-7038-5921-4685", "TEMP-4297-1865-7032", "TEMP-8642-1397-5280",
+            "TEMP-6194-2835-7106", "TEMP-1753-9642-8307", "TEMP-5087-3162-9475",
+            "TEMP-9631-4852-7106", "TEMP-7248-0395-6172", "TEMP-3962-8714-5203",
+            "TEMP-1583-6429-0751", "TEMP-8305-2974-6148", "TEMP-4729-6158-3042",
+            "TEMP-6190-8743-2516", "TEMP-2846-7319-5084", "TEMP-9573-2048-6139",
+            "TEMP-6318-4927-0851", "TEMP-4097-5826-3194", "TEMP-7261-9854-0372",
+            "TEMP-1946-8735-2105", "TEMP-5632-8194-7026", "TEMP-8472-0395-1618",
+            "TEMP-3196-7542-8021", "TEMP-6852-4179-0326", "TEMP-9327-1548-6021",
+            "TEMP-4781-6295-3104", "TEMP-2159-6834-7012", "TEMP-8643-0175-2928",
+            "TEMP-5972-4813-0659", "TEMP-3418-9625-7104", "TEMP-7295-1864-0312",
+            "TEMP-4836-2197-5601", "TEMP-8164-3952-7018", "TEMP-2649-5731-8024",
+            "TEMP-9375-2814-6039", "TEMP-6524-1893-7106", "TEMP-3197-4852-0614",
+            "TEMP-8462-5731-9025", "TEMP-5739-2148-6027", "TEMP-2816-4953-7108",
+            "TEMP-9347-5621-8039", "TEMP-6582-4193-7025", "TEMP-3179-2648-5102",
+            "TEMP-8452-1937-6024", "TEMP-5927-4813-0651"
         ];
 
         let usedKeys = new Set();
@@ -636,88 +649,84 @@
 
         // إعادة تعيين الخطوات
         function resetSteps() {
-            const steps = ['adStepBtn', 'subscribeStepBtn', 'discordStepBtn'];
-            const timers = ['timer1', 'timer2'];
+            const steps = ['tiktokStepBtn', 'youtubeStepBtn', 'discordStepBtn'];
+            const statuses = ['tiktokStatus', 'youtubeStatus', 'discordStatus'];
             
-            steps.forEach(step => {
+            steps.forEach((step, index) => {
                 const btn = document.getElementById(step);
-                btn.disabled = step !== 'adStepBtn';
-                btn.innerHTML = step === 'discordStepBtn' ? 
-                    '<i class="fas fa-external-link-alt"></i> الانضمام الآن' : 
-                    '<i class="fas fa-play"></i> بدء المشاهدة';
+                btn.disabled = index !== 0;
+                if (index === 0) {
+                    btn.innerHTML = '<i class="fab fa-tiktok"></i> المتابعة الآن';
+                } else if (index === 1) {
+                    btn.innerHTML = '<i class="fab fa-youtube"></i> الاشتراك الآن';
+                } else {
+                    btn.innerHTML = '<i class="fas fa-external-link-alt"></i> الانضمام الآن';
+                }
                 btn.classList.remove('completed');
             });
             
-            timers.forEach(timer => {
-                document.getElementById(timer).textContent = '10';
+            statuses.forEach((status, index) => {
+                if (index === 0) {
+                    document.getElementById(status).textContent = 'في انتظار المتابعة';
+                } else if (index === 1) {
+                    document.getElementById(status).textContent = 'في انتظار الاشتراك';
+                } else {
+                    document.getElementById(status).textContent = 'في انتظار إكمال الخطوات السابقة';
+                }
             });
             
-            document.getElementById('discordStatus').textContent = 'في انتظار إكمال الخطوات السابقة';
             document.getElementById('keyResult').style.display = 'none';
         }
 
-        // بدء الخطوة
-        function startStep(stepNumber) {
-            const timerElement = document.getElementById(`timer${stepNumber}`);
-            const button = document.getElementById([
-                'adStepBtn', 
-                'subscribeStepBtn', 
-                'discordStepBtn'
-            ][stepNumber - 1]);
-
-            let timeLeft = 10;
+        // فتح تيك توك
+        function openTikTok() {
+            window.open('https://www.tiktok.com/@script_f1', '_blank');
+            const button = document.getElementById('tiktokStepBtn');
+            const status = document.getElementById('tiktokStatus');
+            button.innerHTML = '<i class="fas fa-check"></i> تمت المتابعة';
+            button.classList.add('completed');
             button.disabled = true;
+            status.textContent = 'تمت المتابعة بنجاح';
+            
+            // تفعيل الخطوة التالية
+            document.getElementById('youtubeStepBtn').disabled = false;
+        }
 
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    button.innerHTML = '<i class="fas fa-check"></i> مكتمل';
-                    button.classList.add('completed');
-                    
-                    // تفعيل الخطوة التالية
-                    if (stepNumber < 3) {
-                        const nextButton = document.getElementById([
-                            'subscribeStepBtn', 
-                            'discordStepBtn'
-                        ][stepNumber - 1]);
-                        nextButton.disabled = false;
-                    }
-                    
-                    // تحديث حالة الديسكورد
-                    if (stepNumber === 2) {
-                        document.getElementById('discordStatus').textContent = 'جاهز للانضمام';
-                    }
-                    
-                    // إذا كانت هذه هي الخطوة الأخيرة
-                    if (stepNumber === 2) {
-                        checkAllStepsCompleted();
-                    }
-                }
-            }, 1000);
+        // فتح يوتيوب
+        function openYouTube() {
+            window.open('https://www.youtube.com/@script_f1', '_blank');
+            const button = document.getElementById('youtubeStepBtn');
+            const status = document.getElementById('youtubeStatus');
+            button.innerHTML = '<i class="fas fa-check"></i> تم الاشتراك';
+            button.classList.add('completed');
+            button.disabled = true;
+            status.textContent = 'تم الاشتراك بنجاح';
+            
+            // تفعيل الخطوة التالية
+            document.getElementById('discordStepBtn').disabled = false;
+            document.getElementById('discordStatus').textContent = 'جاهز للانضمام';
         }
 
         // الانضمام إلى الديسكورد
         function joinDiscord() {
-            window.open('https://discord.gg/8h8xtAe6YT', '_blank');
+            window.open('https://discord.gg/Z3pTBcYq4T', '_blank');
             const button = document.getElementById('discordStepBtn');
+            const status = document.getElementById('discordStatus');
             button.innerHTML = '<i class="fas fa-check"></i> انضممت';
             button.classList.add('completed');
             button.disabled = true;
-            document.getElementById('discordStatus').textContent = 'تم الانضمام بنجاح';
+            status.textContent = 'تم الانضمام بنجاح';
             
             checkAllStepsCompleted();
         }
 
         // التحقق من اكتمال جميع الخطوات
         function checkAllStepsCompleted() {
-            const adCompleted = document.getElementById('adStepBtn').classList.contains('completed');
-            const subscribeCompleted = document.getElementById('subscribeStepBtn').classList.contains('completed');
+            const tiktokCompleted = document.getElementById('tiktokStepBtn').classList.contains('completed');
+            const youtubeCompleted = document.getElementById('youtubeStepBtn').classList.contains('completed');
             const discordCompleted = document.getElementById('discordStepBtn').classList.contains('completed');
 
-            if (adCompleted && subscribeCompleted && discordCompleted) {
+            if (tiktokCompleted && youtubeCompleted && discordCompleted) {
                 setTimeout(() => {
                     generateTempKey();
                 }, 1000);
