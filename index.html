@@ -3,817 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام المفاتيح VIB</title>
+    <title>VNDXS.Group.Keyless</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --dark-blue: #0a0a2a;
+            --medium-blue: #1a1a3a;
+            --light-blue: #2a2a5a;
+            --accent-blue: #3a7afe;
+            --text-light: #f0f0f0;
+            --text-gold: #ffd700;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #000000 50%, var(--dark-blue) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            transition: all 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+            animation: backgroundShift 10s infinite alternate;
         }
-
+        
+        @keyframes backgroundShift {
+            0% { background: linear-gradient(135deg, var(--dark-blue) 0%, #000000 50%, var(--dark-blue) 100%); }
+            100% { background: linear-gradient(135deg, #000000 0%, var(--dark-blue) 50%, #000000 100%); }
+        }
+        
         .container {
-            width: 100%;
-            max-width: 1000px;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: all 0.3s ease;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
-
-        .header {
-            background: #f8f9fa;
-            padding: 30px;
+        
+        header {
             text-align: center;
-            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 3rem;
+            width: 100%;
         }
-
-        .header i {
-            font-size: 3rem;
-            color: #6c757d;
-            margin-bottom: 15px;
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--text-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(58, 122, 254, 0.5);
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
         }
-
-        .header h1 {
-            color: #495057;
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+        
+        .subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
         }
-
-        .header p {
-            color: #6c757d;
-            font-size: 1.1rem;
+        
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 3rem;
         }
-
-        .content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .key-section {
-            background: #f8f9fa;
-            padding: 25px;
+        
+        .step {
+            background: rgba(10, 20, 40, 0.7);
             border-radius: 15px;
-            border: 1px solid #e9ecef;
-            transition: transform 0.3s ease;
-            text-align: center;
-        }
-
-        .key-section:hover {
-            transform: translateY(-5px);
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .section-header i {
-            font-size: 1.8rem;
-            color: #6c757d;
-            margin-left: 15px;
-        }
-
-        .section-header h2 {
-            color: #495057;
-            font-size: 1.4rem;
-        }
-
-        .discord-contact {
-            background: #5865F2;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-        .discord-contact:hover {
-            background: #4752C4;
-        }
-
-        .temp-key-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
+            padding: 2rem;
+            border: 1px solid rgba(58, 122, 254, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
         }
-
-        .temp-key-btn:hover {
-            background: #218838;
-            transform: translateY(-2px);
+        
+        .step.active {
+            border-color: var(--accent-blue);
+            box-shadow: 0 5px 20px rgba(58, 122, 254, 0.4);
         }
-
-        .temp-key-btn:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-            transform: none;
+        
+        .step.completed {
+            border-color: var(--text-gold);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
         }
-
-        /* صفحة الخطوات الجديدة */
-        .steps-page {
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-icon {
+            font-size: 2rem;
+            margin-left: 1rem;
+            color: var(--accent-blue);
+        }
+        
+        .step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-light);
+        }
+        
+        .step-description {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+        
+        .step-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #2a5fc7 100%);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .step-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(58, 122, 254, 0.4);
+        }
+        
+        .step-action.completed {
+            background: linear-gradient(135deg, var(--text-gold) 0%, #ffaa00 100%);
+        }
+        
+        .step-action i {
+            margin-left: 8px;
+        }
+        
+        .timer {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-gold);
+            margin-top: 1rem;
+            text-align: center;
             display: none;
+        }
+        
+        .special-text {
+            font-family: 'El Messiri', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            color: var(--text-gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            padding: 1rem;
+            border-radius: 10px;
+            background: rgba(10, 20, 50, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .keys-container {
+            display: none;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            width: 100%;
+        }
+        
+        .key {
+            background: rgba(20, 30, 60, 0.8);
+            border: 1px solid rgba(58, 122, 254, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            text-align: center;
+            flex: 1 0 calc(25% - 1rem);
+            min-width: 200px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .key::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .key:hover::before {
+            left: 100%;
+        }
+        
+        .key:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(58, 122, 254, 0.4);
+            border-color: var(--accent-blue);
+        }
+        
+        .stars {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            z-index: 1000;
-            overflow-y: auto;
-            padding: 20px;
+            z-index: -1;
         }
-
-        .steps-container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
         }
-
-        .steps-header {
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        footer {
+            margin-top: auto;
+            padding: 2rem 0;
             text-align: center;
-            margin-bottom: 30px;
+            width: 100%;
+            border-top: 1px solid rgba(58, 122, 254, 0.2);
         }
-
-        .steps-header h2 {
-            color: #495057;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .steps-header p {
-            color: #6c757d;
-        }
-
-        .step-card {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .step-card:hover {
-            border-color: #007bff;
-            transform: translateY(-3px);
-        }
-
-        .step-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 15px;
-            font-size: 1.3rem;
-            color: white;
-        }
-
-        .step-1 .step-icon { background: #000000; } /* تيك توك - أسود */
-        .step-2 .step-icon { background: #FF0000; } /* يوتيوب - أحمر */
-        .step-3 .step-icon { background: #5865F2; } /* ديسكورد - أزرق */
-
-        .step-info h3 {
-            color: #495057;
-            margin-bottom: 5px;
-        }
-
-        .step-info p {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-
-        .step-action {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .step-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .step-btn:hover:not(:disabled) {
-            background: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        .step-btn:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .step-btn.completed {
-            background: #28a745;
-        }
-
-        .completed-text {
-            color: #28a745;
-            font-weight: bold;
-        }
-
-        /* نتيجة المفتاح */
-        .key-result {
-            display: none;
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            color: #155724;
-            padding: 30px;
-            border-radius: 15px;
-            margin-top: 30px;
-            text-align: center;
-            border: 2px solid #c3e6cb;
-        }
-
-        .key-result i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #28a745;
-        }
-
-        .key-code {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 1.4rem;
-            margin: 20px 0;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px dashed #28a745;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .copy-btn {
-            background: transparent;
-            border: none;
-            color: #28a745;
+        
+        footer p {
             font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 5px;
-            border-radius: 5px;
+            color: #a0c0ff;
         }
-
-        .copy-btn:hover {
-            background: #28a745;
-            color: white;
-            transform: scale(1.1);
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .step-title {
+                font-size: 1.5rem;
+            }
+            
+            .special-text {
+                font-size: 1.5rem;
+            }
+            
+            .key {
+                flex: 1 0 calc(50% - 1rem);
+            }
         }
-
-        .back-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s ease;
+        
+        @media (max-width: 480px) {
+            .key {
+                flex: 1 0 100%;
+            }
         }
-
-        .back-btn:hover {
-            background: #545b62;
-            transform: translateY(-2px);
-        }
-
-        .cooldown-message {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            text-align: center;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
-            border-top: 2px solid #e9ecef;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .stat-card i {
-            font-size: 2rem;
-            color: #6c757d;
-            margin-bottom: 10px;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #495057;
-            margin: 10px 0;
-        }
-
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-
-        /* تأثيرات الحركة */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .key-section {
-            animation: fadeIn 0.6s ease forwards;
-        }
-
-        .step-card {
-            animation: fadeIn 0.6s ease forwards;
-        }
-
-        .step-card:nth-child(1) { animation-delay: 0.1s; }
-        .step-card:nth-child(2) { animation-delay: 0.2s; }
-        .step-card:nth-child(3) { animation-delay: 0.3s; }
     </style>
 </head>
 <body>
-    <!-- الصفحة الرئيسية -->
-    <div class="container" id="mainPage">
-        <div class="header">
-            <i class="fas fa-key"></i>
-            <h1>نظام المفاتيح المميز VIB</h1>
-            <p>مفاتيح احترافية لأنظمة السكربتات المتطورة</p>
-        </div>
-
-        <div class="content">
-            <!-- قسم المفاتيح المدفوعة -->
-            <div class="key-section">
-                <div class="section-header">
-                    <i class="fas fa-crown"></i>
-                    <h2>المفاتيح المدفوعة (VIB)</h2>
-                </div>
-                <p style="color: #6c757d; margin-bottom: 20px;">للحصول على مفتاح مدفوع، يرجى التواصل مع المطور</p>
-                
-                <a href="https://discord.com/users/1_ing1" class="discord-contact" target="_blank">
-                    <i class="fab fa-discord"></i>
-                    التكلم مع 1_ing1 على الديسكورد
-                </a>
-                
-                <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 10px; color: #856404;">
-                    <i class="fas fa-info-circle"></i>
-                    المفاتيح المدفوعة تعمل بشكل دائم وعلى جهاز واحد فقط
-                </div>
-            </div>
-
-            <!-- قسم المفاتيح المؤقتة -->
-            <div class="key-section">
-                <div class="section-header">
-                    <i class="fas fa-clock"></i>
-                    <h2>المفاتيح المؤقتة</h2>
-                </div>
-                <p style="color: #6c757d; margin-bottom: 20px;">احصل على مفتاح مجاني لمدة 1 ساعة</p>
-                
-                <button class="temp-key-btn" id="getTempKeyBtn">
-                    <i class="fas fa-download"></i>
-                    الحصول على مفتاح مؤقت
-                </button>
-
-                <div class="cooldown-message" id="cooldownMessage">
-                    <i class="fas fa-clock"></i>
-                    <span id="cooldownTimer">يمكنك طلب مفتاح جديد بعد: 01:00:00</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="stats">
-            <div class="stat-card">
-                <i class="fas fa-crown"></i>
-                <div class="stat-number">2</div>
-                <div class="stat-label">مفاتيح دائمة</div>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-clock"></i>
-                <div class="stat-number">50</div>
-                <div class="stat-label">مفاتيح مؤقتة</div>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-desktop"></i>
-                <div class="stat-number">جهاز واحد</div>
-                <div class="stat-label">لكل مفتاح</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- صفحة الخطوات -->
-    <div class="steps-page" id="stepsPage">
+    <!-- تأثير النجوم في الخلفية -->
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">VNDXS.Group.Keyless</h1>
+            <p class="subtitle">Get Your Premium Keys in 3 Simple Steps</p>
+        </header>
+        
+        <div class="special-text">اللهم صلي على محمد وعلى آل محمد</div>
+        
         <div class="steps-container">
-            <div class="steps-header">
-                <h2><i class="fas fa-tasks"></i> خطوات الحصول على المفتاح</h2>
-                <p>أكمل الخطوات التالية للحصول على مفتاحك المجاني</p>
-            </div>
-
-            <!-- الخطوة 1 - تيك توك -->
-            <div class="step-card step-1">
+            <div class="step" id="step1">
                 <div class="step-header">
-                    <div class="step-icon">
-                        <i class="fab fa-tiktok" style="color: white;"></i>
-                    </div>
-                    <div class="step-info">
-                        <h3>تابعني على TikTok</h3>
-                        <p>تابع حساب التيك توك لدعم المطور</p>
-                    </div>
+                    <i class="fab fa-tiktok step-icon"></i>
+                    <h2 class="step-title">Step 1: Follow on TikTok</h2>
                 </div>
-                <div class="step-action">
-                    <span id="tiktokStatus">في انتظار المتابعة</span>
-                    <button class="step-btn" id="tiktokStepBtn" onclick="openTikTok()">
-                        <i class="fab fa-tiktok"></i>
-                        المتابعة الآن
-                    </button>
-                </div>
+                <p class="step-description">تابعنا على TikTok للحصول على أحدث المحتويات والإعلانات</p>
+                <a href="https://tiktok.com/@script_f1" class="step-action" target="_blank" id="step1-btn">
+                    <i class="fab fa-tiktok"></i>
+                    Follow on TikTok
+                </a>
+                <div class="timer" id="timer1">30</div>
             </div>
-
-            <!-- الخطوة 2 - يوتيوب -->
-            <div class="step-card step-2">
+            
+            <div class="step" id="step2">
                 <div class="step-header">
-                    <div class="step-icon">
-                        <i class="fab fa-youtube" style="color: white;"></i>
-                    </div>
-                    <div class="step-info">
-                        <h3>اشترك في القناة</h3>
-                        <p>اشترك في قناتنا على اليوتيوب</p>
-                    </div>
+                    <i class="fab fa-youtube step-icon"></i>
+                    <h2 class="step-title">Step 2: Subscribe on YouTube</h2>
                 </div>
-                <div class="step-action">
-                    <span id="youtubeStatus">في انتظار الاشتراك</span>
-                    <button class="step-btn" id="youtubeStepBtn" onclick="openYouTube()" disabled>
-                        <i class="fab fa-youtube"></i>
-                        الاشتراك الآن
-                    </button>
-                </div>
+                <p class="step-description">اشترك في قناتنا على YouTube لمشاهدة الشروحات والتحديثات</p>
+                <a href="https://youtube.com/@script_f1?si=N5Tn4jtjBuP3MI34" class="step-action" target="_blank" id="step2-btn" style="display: none;">
+                    <i class="fab fa-youtube"></i>
+                    Subscribe on YouTube
+                </a>
+                <div class="timer" id="timer2">30</div>
             </div>
-
-            <!-- الخطوة 3 - ديسكورد -->
-            <div class="step-card step-3">
+            
+            <div class="step" id="step3">
                 <div class="step-header">
-                    <div class="step-icon">
-                        <i class="fab fa-discord" style="color: white;"></i>
-                    </div>
-                    <div class="step-info">
-                        <h3>انضم إلى المجتمع</h3>
-                        <p>انضم إلى مجتمعنا على الديسكورد</p>
-                    </div>
+                    <i class="fas fa-key step-icon"></i>
+                    <h2 class="step-title">Step 3: Get Your Keys</h2>
                 </div>
-                <div class="step-action">
-                    <span id="discordStatus">في انتظار إكمال الخطوات السابقة</span>
-                    <button class="step-btn" id="discordStepBtn" onclick="joinDiscord()" disabled>
-                        <i class="fas fa-external-link-alt"></i>
-                        الانضمام الآن
-                    </button>
-                </div>
-            </div>
-
-            <!-- نتيجة المفتاح -->
-            <div class="key-result" id="keyResult">
-                <i class="fas fa-key"></i>
-                <h3>مبروك! هذا هو مفتاحك:</h3>
-                <div class="key-code" id="generatedKey">
-                    <span>TEMP-XXXX-XXXX-XXXX</span>
-                    <button class="copy-btn" onclick="copyKey()" title="نسخ المفتاح">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </div>
-                <p style="font-size: 0.9rem; margin-top: 10px;">
-                    يعمل لمدة 1 ساعة وعلى جهاز واحد فقط
-                </p>
-                <button class="back-btn" onclick="closeStepsPage()">
-                    <i class="fas fa-arrow-right"></i>
-                    العودة للصفحة الرئيسية
+                <p class="step-description">احصل على المفاتيح الحصرية بعد إتمام الخطوات السابقة</p>
+                <button class="step-action" id="step3-btn" style="display: none;">
+                    <i class="fas fa-key"></i>
+                    Get Keys
                 </button>
+                <div class="timer" id="timer3">30</div>
             </div>
         </div>
+        
+        <div class="keys-container" id="keys-container">
+            <!-- المفاتيح ستظهر هنا بعد إتمام الخطوات -->
+        </div>
+        
+        <footer>
+            <p>VNDXS Group &copy; 2024 - All Rights Reserved</p>
+        </footer>
     </div>
 
     <script>
-        // المفاتيح المدفوعة (2 مفاتيح)
-        const vipKeys = [
-            "VIB-7294-6158-3042",
-            "VIB-8462-1973-5025"
-        ];
-
-        // المفاتيح المؤقتة (50 مفتاح)
-        const tempKeys = [
-            "TEMP-7294-6158-3042", "TEMP-8462-1973-5025", "TEMP-5739-2841-6107",
-            "TEMP-3184-7295-0618", "TEMP-9642-8153-7204", "TEMP-2579-4316-0893",
-            "TEMP-7038-5921-4685", "TEMP-4297-1865-7032", "TEMP-8642-1397-5280",
-            "TEMP-6194-2835-7106", "TEMP-1753-9642-8307", "TEMP-5087-3162-9475",
-            "TEMP-9631-4852-7106", "TEMP-7248-0395-6172", "TEMP-3962-8714-5203",
-            "TEMP-1583-6429-0751", "TEMP-8305-2974-6148", "TEMP-4729-6158-3042",
-            "TEMP-6190-8743-2516", "TEMP-2846-7319-5084", "TEMP-9573-2048-6139",
-            "TEMP-6318-4927-0851", "TEMP-4097-5826-3194", "TEMP-7261-9854-0372",
-            "TEMP-1946-8735-2105", "TEMP-5632-8194-7026", "TEMP-8472-0395-1618",
-            "TEMP-3196-7542-8021", "TEMP-6852-4179-0326", "TEMP-9327-1548-6021",
-            "TEMP-4781-6295-3104", "TEMP-2159-6834-7012", "TEMP-8643-0175-2928",
-            "TEMP-5972-4813-0659", "TEMP-3418-9625-7104", "TEMP-7295-1864-0312",
-            "TEMP-4836-2197-5601", "TEMP-8164-3952-7018", "TEMP-2649-5731-8024",
-            "TEMP-9375-2814-6039", "TEMP-6524-1893-7106", "TEMP-3197-4852-0614",
-            "TEMP-8462-5731-9025", "TEMP-5739-2148-6027", "TEMP-2816-4953-7108",
-            "TEMP-9347-5621-8039", "TEMP-6582-4193-7025", "TEMP-3179-2648-5102",
-            "TEMP-8452-1937-6024", "TEMP-5927-4813-0651"
-        ];
-
-        let usedKeys = new Set();
-        let usedDevices = new Set();
-        let lastKeyTime = 0;
-        const COOLDOWN_TIME = 60 * 60 * 1000; // 1 ساعة
-
-        // إنشاء معرف فريد للجهاز
-        function getDeviceId() {
-            let deviceId = localStorage.getItem('deviceId');
-            if (!deviceId) {
-                deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('deviceId', deviceId);
-            }
-            return deviceId;
-        }
-
-        // التحقق من الوقت المتبقي
-        function checkCooldown() {
-            const now = Date.now();
-            const timePassed = now - lastKeyTime;
+        // إنشاء تأثير النجوم في الخلفية
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 100;
             
-            if (lastKeyTime && timePassed < COOLDOWN_TIME) {
-                const remaining = COOLDOWN_TIME - timePassed;
-                return remaining;
-            }
-            return 0;
-        }
-
-        // تحديث عرض الوقت المتبقي
-        function updateCooldownDisplay() {
-            const remaining = checkCooldown();
-            const cooldownMessage = document.getElementById('cooldownMessage');
-            const cooldownTimer = document.getElementById('cooldownTimer');
-            const getTempKeyBtn = document.getElementById('getTempKeyBtn');
-
-            if (remaining > 0) {
-                const hours = Math.floor(remaining / (1000 * 60 * 60));
-                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
                 
-                cooldownTimer.textContent = `يمكنك طلب مفتاح جديد بعد: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                cooldownMessage.style.display = 'block';
-                getTempKeyBtn.disabled = true;
-            } else {
-                cooldownMessage.style.display = 'none';
-                getTempKeyBtn.disabled = false;
+                // حجم عشوائي للنجوم
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // مواضع عشوائية
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // تأخير عشوائي للوميض
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starsContainer.appendChild(star);
             }
-        }
-
-        // فتح صفحة الخطوات
-        function openStepsPage() {
-            document.getElementById('mainPage').style.display = 'none';
-            document.getElementById('stepsPage').style.display = 'block';
-            resetSteps();
-        }
-
-        // إغلاق صفحة الخطوات
-        function closeStepsPage() {
-            document.getElementById('stepsPage').style.display = 'none';
-            document.getElementById('mainPage').style.display = 'block';
-            updateCooldownDisplay();
-        }
-
-        // إعادة تعيين الخطوات
-        function resetSteps() {
-            const steps = ['tiktokStepBtn', 'youtubeStepBtn', 'discordStepBtn'];
-            const statuses = ['tiktokStatus', 'youtubeStatus', 'discordStatus'];
             
-            steps.forEach((step, index) => {
-                const btn = document.getElementById(step);
-                btn.disabled = index !== 0;
-                if (index === 0) {
-                    btn.innerHTML = '<i class="fab fa-tiktok"></i> المتابعة الآن';
-                } else if (index === 1) {
-                    btn.innerHTML = '<i class="fab fa-youtube"></i> الاشتراك الآن';
-                } else {
-                    btn.innerHTML = '<i class="fas fa-external-link-alt"></i> الانضمام الآن';
-                }
-                btn.classList.remove('completed');
+            // تعريف المفاتيح
+            const keys = [
+                "VNDXS-HUB-2024-PRO",
+                "HITBOX-FREE-VIP-ACCESS",  
+                "AIMBOT-PRO-MAX-2024",
+                "VNDXS-SCRIPT-SEASON1",
+                "GAMING-HUB-PREMIUM-KEY",
+                "VNDXS-COMMUNITY-ACCESS",
+                "ROBLOX-HACK-PREMIUM24",
+                "VNDXS-SPECIAL-EDITION",
+                "PRO-GAMER-HUB-LICENSE",
+                "VNDXS-ULTIMATE-SCRIPT",
+                "FREE-HITBOX-PRO-KEY24",
+                "VNDXS-DEVELOPER-SPECIAL",
+                "PREMIUM-AIMBOT-LICENSE",
+                "VNDXS-GOLD-MEMBER-2024",
+                "SCRIPT-HUB-ELITE-KEY24",
+                "VNDXS-PLATINUM-ACCESS",
+                "PRO-SCRIPTER-VIP-2024",
+                "VNDXS-DIAMOND-EDITION",
+                "HUB-PREMIUM-LIFETIME",
+                "VNDXS-FINAL-SEASON-KEY"
+            ];
+            
+            // متغيرات التحكم
+            let currentStep = 1;
+            let timers = {};
+            
+            // زر الخطوة الأولى
+            document.getElementById('step1-btn').addEventListener('click', function() {
+                startStepTimer(1);
             });
             
-            statuses.forEach((status, index) => {
-                if (index === 0) {
-                    document.getElementById(status).textContent = 'في انتظار المتابعة';
-                } else if (index === 1) {
-                    document.getElementById(status).textContent = 'في انتظار الاشتراك';
-                } else {
-                    document.getElementById(status).textContent = 'في انتظار إكمال الخطوات السابقة';
-                }
+            // زر الخطوة الثانية
+            document.getElementById('step2-btn').addEventListener('click', function() {
+                startStepTimer(2);
             });
             
-            document.getElementById('keyResult').style.display = 'none';
-        }
-
-        // فتح تيك توك
-        function openTikTok() {
-            window.open('https://www.tiktok.com/@script_f1', '_blank');
-            const button = document.getElementById('tiktokStepBtn');
-            const status = document.getElementById('tiktokStatus');
-            button.innerHTML = '<i class="fas fa-check"></i> تمت المتابعة';
-            button.classList.add('completed');
-            button.disabled = true;
-            status.textContent = 'تمت المتابعة بنجاح';
+            // زر الخطوة الثالثة
+            document.getElementById('step3-btn').addEventListener('click', function() {
+                startStepTimer(3);
+            });
             
-            // تفعيل الخطوة التالية
-            document.getElementById('youtubeStepBtn').disabled = false;
-        }
-
-        // فتح يوتيوب
-        function openYouTube() {
-            window.open('https://www.youtube.com/@script_f1', '_blank');
-            const button = document.getElementById('youtubeStepBtn');
-            const status = document.getElementById('youtubeStatus');
-            button.innerHTML = '<i class="fas fa-check"></i> تم الاشتراك';
-            button.classList.add('completed');
-            button.disabled = true;
-            status.textContent = 'تم الاشتراك بنجاح';
-            
-            // تفعيل الخطوة التالية
-            document.getElementById('discordStepBtn').disabled = false;
-            document.getElementById('discordStatus').textContent = 'جاهز للانضمام';
-        }
-
-        // الانضمام إلى الديسكورد
-        function joinDiscord() {
-            window.open('https://discord.gg/Z3pTBcYq4T', '_blank');
-            const button = document.getElementById('discordStepBtn');
-            const status = document.getElementById('discordStatus');
-            button.innerHTML = '<i class="fas fa-check"></i> انضممت';
-            button.classList.add('completed');
-            button.disabled = true;
-            status.textContent = 'تم الانضمام بنجاح';
-            
-            checkAllStepsCompleted();
-        }
-
-        // التحقق من اكتمال جميع الخطوات
-        function checkAllStepsCompleted() {
-            const tiktokCompleted = document.getElementById('tiktokStepBtn').classList.contains('completed');
-            const youtubeCompleted = document.getElementById('youtubeStepBtn').classList.contains('completed');
-            const discordCompleted = document.getElementById('discordStepBtn').classList.contains('completed');
-
-            if (tiktokCompleted && youtubeCompleted && discordCompleted) {
-                setTimeout(() => {
-                    generateTempKey();
+            // بدء المؤقت للخطوة
+            function startStepTimer(step) {
+                const stepElement = document.getElementById(`step${step}`);
+                const timerElement = document.getElementById(`timer${step}`);
+                const buttonElement = document.getElementById(`step${step}-btn`);
+                
+                // تحديث حالة الخطوة
+                stepElement.classList.remove('active');
+                stepElement.classList.add('completed');
+                buttonElement.classList.add('completed');
+                buttonElement.innerHTML = '<i class="fas fa-check"></i> Completed';
+                
+                // إظهار المؤقت
+                timerElement.style.display = 'block';
+                
+                // بدء العد التنازلي
+                let timeLeft = 30;
+                timers[step] = setInterval(function() {
+                    timeLeft--;
+                    timerElement.textContent = timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timers[step]);
+                        timerElement.style.display = 'none';
+                        
+                        // إذا كانت هذه ليست الخطوة الأخيرة، فتفعيل الخطوة التالية
+                        if (step < 3) {
+                            const nextStep = step + 1;
+                            document.getElementById(`step${nextStep}`).classList.add('active');
+                            document.getElementById(`step${nextStep}-btn`).style.display = 'inline-flex';
+                        } else {
+                            // إذا كانت الخطوة الأخيرة، عرض المفاتيح
+                            showKeys();
+                        }
+                    }
                 }, 1000);
             }
-        }
-
-        // نسخ المفتاح
-        function copyKey() {
-            const keyText = document.getElementById('generatedKey').querySelector('span').textContent;
-            navigator.clipboard.writeText(keyText).then(() => {
-                const copyBtn = document.querySelector('.copy-btn');
-                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="far fa-copy"></i>';
-                }, 2000);
-            });
-        }
-
-        // إنشاء مفتاح مؤقت
-        function generateTempKey() {
-            const deviceId = getDeviceId();
-            const now = Date.now();
             
-            // التحقق من الوقت المتبقي
-            const cooldownRemaining = checkCooldown();
-            if (cooldownRemaining > 0) {
-                alert('يجب الانتظار 1 ساعة قبل طلب مفتاح جديد');
-                return;
-            }
-
-            // البحث عن مفتاح غير مستخدم
-            let availableKey = null;
-            for (const key of tempKeys) {
-                if (!usedKeys.has(key)) {
-                    availableKey = key;
-                    break;
-                }
-            }
-
-            if (availableKey) {
-                usedKeys.add(availableKey);
-                usedDevices.add(deviceId);
-                lastKeyTime = now;
+            // عرض المفاتيح
+            function showKeys() {
+                const keysContainer = document.getElementById('keys-container');
+                keysContainer.style.display = 'flex';
                 
-                // حفظ في localStorage
-                localStorage.setItem('lastKeyTime', now.toString());
-                localStorage.setItem('usedKeys', JSON.stringify(Array.from(usedKeys)));
-                localStorage.setItem('usedDevices', JSON.stringify(Array.from(usedDevices)));
-                
-                // عرض المفتاح
-                document.getElementById('generatedKey').querySelector('span').textContent = availableKey;
-                document.getElementById('keyResult').style.display = 'block';
-                
-            } else {
-                alert('لا توجد مفاتيح متاحة حالياً');
+                keys.forEach(key => {
+                    const keyElement = document.createElement('div');
+                    keyElement.classList.add('key');
+                    keyElement.textContent = key;
+                    keysContainer.appendChild(keyElement);
+                });
             }
-        }
-
-        // تحميل البيانات المحفوظة
-        function loadSavedData() {
-            const savedLastKeyTime = localStorage.getItem('lastKeyTime');
-            const savedUsedKeys = localStorage.getItem('usedKeys');
-            const savedUsedDevices = localStorage.getItem('usedDevices');
-            
-            if (savedLastKeyTime) {
-                lastKeyTime = parseInt(savedLastKeyTime);
-            }
-            
-            if (savedUsedKeys) {
-                usedKeys = new Set(JSON.parse(savedUsedKeys));
-            }
-            
-            if (savedUsedDevices) {
-                usedDevices = new Set(JSON.parse(savedUsedDevices));
-            }
-        }
-
-        // تهيئة الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            loadSavedData();
-            updateCooldownDisplay();
-            
-            // تحديث العداد كل ثانية
-            setInterval(updateCooldownDisplay, 1000);
-            
-            // زر الحصول على مفتاح مؤقت
-            document.getElementById('getTempKeyBtn').addEventListener('click', openStepsPage);
         });
     </script>
 </body>
