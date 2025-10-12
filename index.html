@@ -1,475 +1,387 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VNDXS.Group.Keyless</title>
+    <title>VX Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=BBH+Sans+Hegarty&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --dark-blue: #0a0a2a;
-            --medium-blue: #1a1a3a;
-            --light-blue: #2a2a5a;
-            --accent-blue: #3a7afe;
-            --text-light: #f0f0f0;
-            --text-gold: #ffd700;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Amiri', serif;
-            background: linear-gradient(135deg, var(--dark-blue) 0%, #000000 50%, var(--dark-blue) 100%);
-            color: var(--text-light);
-            line-height: 1.6;
+            font-family: "PT Sans", sans-serif;
+            background: linear-gradient(-45deg, #000000, #0a0a2a, #000033, #001a33);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: white;
             min-height: 100vh;
-            position: relative;
             overflow-x: hidden;
-            animation: backgroundShift 10s infinite alternate;
         }
-        
-        @keyframes backgroundShift {
-            0% { background: linear-gradient(135deg, var(--dark-blue) 0%, #000000 50%, var(--dark-blue) 100%); }
-            100% { background: linear-gradient(135deg, #000000 0%, var(--dark-blue) 50%, #000000 100%); }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
+
         .container {
+            position: relative;
+            z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            padding: 100px 20px 50px;
         }
-        
+
         header {
-            text-align: center;
-            margin-bottom: 3rem;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            padding: 15px 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 42, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--text-gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(58, 122, 254, 0.5);
-            margin-bottom: 1.5rem;
-            letter-spacing: 2px;
-        }
-        
-        .subtitle {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            letter-spacing: 1px;
-        }
-        
-        .steps-container {
+
+        .nav-container {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 3rem;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        
-        .step {
-            background: rgba(10, 20, 40, 0.7);
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: "PT Sans", sans-serif;
+            font-weight: 700;
+        }
+
+        .nav-btn:hover {
+            background: rgba(114, 137, 218, 0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 60px;
+        }
+
+        .logo img {
+            height: 100%;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+        }
+
+        .social-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .social-card {
+            background: rgba(10, 10, 42, 0.8);
             border-radius: 15px;
-            padding: 2rem;
-            border: 1px solid rgba(58, 122, 254, 0.3);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            padding: 40px 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
         }
-        
-        .step.active {
-            border-color: var(--accent-blue);
-            box-shadow: 0 5px 20px rgba(58, 122, 254, 0.4);
+
+        .social-card:hover {
+            transform: translateY(-10px);
         }
-        
-        .step.completed {
-            border-color: var(--text-gold);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+
+        .social-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
         }
-        
-        .step-header {
+
+        .youtube-card .social-icon {
+            color: #FF0000;
+        }
+
+        .discord-card .social-icon {
+            color: #7289da;
+        }
+
+        .tiktok-card .social-icon {
+            color: #69C9D0;
+        }
+
+        .social-card h2 {
+            font-family: "BBH Sans Hegarty", sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: white;
             display: flex;
             align-items: center;
-            margin-bottom: 1.5rem;
+            justify-content: center;
+            gap: 15px;
         }
-        
-        .step-icon {
-            font-size: 2rem;
-            margin-left: 1rem;
-            color: var(--accent-blue);
-        }
-        
-        .step-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            color: var(--text-light);
-        }
-        
-        .step-description {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            color: #ccc;
-        }
-        
-        .step-action {
+
+        .social-btn {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--accent-blue) 0%, #2a5fc7 100%);
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            gap: 10px;
+            padding: 15px 30px;
             border: none;
-            cursor: pointer;
-        }
-        
-        .step-action:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(58, 122, 254, 0.4);
-        }
-        
-        .step-action.completed {
-            background: linear-gradient(135deg, var(--text-gold) 0%, #ffaa00 100%);
-        }
-        
-        .step-action i {
-            margin-left: 8px;
-        }
-        
-        .timer {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: var(--text-gold);
-            margin-top: 1rem;
-            text-align: center;
-            display: none;
-        }
-        
-        .special-text {
-            font-family: 'El Messiri', sans-serif;
-            font-size: 2rem;
-            text-align: center;
-            margin: 2rem 0;
-            color: var(--text-gold);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            padding: 1rem;
-            border-radius: 10px;
-            background: rgba(10, 20, 50, 0.3);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-        
-        .keys-container {
-            display: none;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-            width: 100%;
-        }
-        
-        .key {
-            background: rgba(20, 30, 60, 0.8);
-            border: 1px solid rgba(58, 122, 254, 0.5);
-            border-radius: 8px;
-            padding: 1rem;
-            font-family: 'Orbitron', sans-serif;
+            border-radius: 25px;
             font-size: 1.1rem;
-            color: var(--text-light);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-family: "PT Sans", sans-serif;
+        }
+
+        .youtube-btn {
+            background: #FF0000;
+            color: white;
+        }
+
+        .youtube-btn:hover {
+            background: #CC0000;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .discord-btn {
+            background: #7289da;
+            color: white;
+        }
+
+        .discord-btn:hover {
+            background: #5b6eae;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(114, 137, 218, 0.3);
+        }
+
+        .tiktok-btn {
+            background: #69C9D0;
+            color: white;
+        }
+
+        .tiktok-btn:hover {
+            background: #4FA8AF;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(105, 201, 208, 0.3);
+        }
+
+        .hero {
             text-align: center;
-            flex: 1 0 calc(25% - 1rem);
-            min-width: 200px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            padding: 50px 0;
         }
-        
-        .key::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+
+        .hero h1 {
+            font-family: "BBH Sans Hegarty", sans-serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
-        
-        .key:hover::before {
-            left: 100%;
+
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
-        
-        .key:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(58, 122, 254, 0.4);
-            border-color: var(--accent-blue);
-        }
-        
+
         .stars {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            pointer-events: none;
+            z-index: 0;
         }
-        
+
         .star {
             position: absolute;
             background-color: white;
             border-radius: 50%;
-            animation: twinkle 5s infinite;
+            animation: twinkle linear infinite, move linear infinite;
         }
-        
+
         @keyframes twinkle {
             0%, 100% { opacity: 0.2; }
             50% { opacity: 1; }
         }
-        
-        footer {
-            margin-top: auto;
-            padding: 2rem 0;
-            text-align: center;
+
+        @keyframes move {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
             width: 100%;
-            border-top: 1px solid rgba(58, 122, 254, 0.2);
+            height: 100px;
+            background: url('https://i.ibb.co/rQZ7LJ2/wave.png');
+            background-size: 1000px 100px;
+            animation: wave 15s linear infinite;
+            opacity: 0.5;
         }
-        
-        footer p {
-            font-size: 1.2rem;
-            color: #a0c0ff;
+
+        .wave:nth-child(2) {
+            animation: wave 10s linear infinite;
+            opacity: 0.3;
+            animation-delay: -5s;
+            bottom: 10px;
         }
-        
+
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1000px; }
+        }
+
         @media (max-width: 768px) {
-            .logo {
+            .social-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .hero h1 {
                 font-size: 2.5rem;
             }
             
-            .subtitle {
-                font-size: 1.2rem;
+            .nav-buttons {
+                gap: 10px;
             }
             
-            .step-title {
-                font-size: 1.5rem;
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
             }
             
-            .special-text {
-                font-size: 1.5rem;
+            .social-card {
+                padding: 30px 20px;
             }
             
-            .key {
-                flex: 1 0 calc(50% - 1rem);
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .key {
-                flex: 1 0 100%;
+            .social-card h2 {
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- تأثير النجوم في الخلفية -->
     <div class="stars" id="stars"></div>
     
+    <header>
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <a href="https://inggroupkeyless.vercel.app/" class="nav-btn">Home</a>
+                <a href="#" class="nav-btn">Scripts</a>
+            </div>
+            <div class="logo">
+                <img src="https://imagizer.imageshack.com/v2/320xq70/r/924/qBbOtR.png" alt="VX Community Logo">
+            </div>
+        </div>
+    </header>
+
     <div class="container">
-        <header>
-            <h1 class="logo">VNDXS.Group.Keyless</h1>
-            <p class="subtitle">Get Your Premium Keys in 3 Simple Steps</p>
-        </header>
-        
-        <div class="special-text">اللهم صلي على محمد وعلى آل محمد</div>
-        
-        <div class="steps-container">
-            <div class="step" id="step1">
-                <div class="step-header">
-                    <i class="fab fa-tiktok step-icon"></i>
-                    <h2 class="step-title">Step 1: Follow on TikTok</h2>
-                </div>
-                <p class="step-description">تابعنا على TikTok للحصول على أحدث المحتويات والإعلانات</p>
-                <a href="https://tiktok.com/@script_f1" class="step-action" target="_blank" id="step1-btn">
-                    <i class="fab fa-tiktok"></i>
-                    Follow on TikTok
-                </a>
-                <div class="timer" id="timer1">30</div>
-            </div>
-            
-            <div class="step" id="step2">
-                <div class="step-header">
-                    <i class="fab fa-youtube step-icon"></i>
-                    <h2 class="step-title">Step 2: Subscribe on YouTube</h2>
-                </div>
-                <p class="step-description">اشترك في قناتنا على YouTube لمشاهدة الشروحات والتحديثات</p>
-                <a href="https://youtube.com/@script_f1?si=N5Tn4jtjBuP3MI34" class="step-action" target="_blank" id="step2-btn" style="display: none;">
+        <section class="hero">
+            <h1>VX Community</h1>
+            <p>Join our vibrant community across multiple platforms and be part of something extraordinary.</p>
+        </section>
+
+        <div class="social-container">
+            <div class="social-card youtube-card">
+                <div class="social-icon">
                     <i class="fab fa-youtube"></i>
-                    Subscribe on YouTube
-                </a>
-                <div class="timer" id="timer2">30</div>
-            </div>
-            
-            <div class="step" id="step3">
-                <div class="step-header">
-                    <i class="fas fa-key step-icon"></i>
-                    <h2 class="step-title">Step 3: Get Your Keys</h2>
                 </div>
-                <p class="step-description">احصل على المفاتيح الحصرية بعد إتمام الخطوات السابقة</p>
-                <button class="step-action" id="step3-btn" style="display: none;">
-                    <i class="fas fa-key"></i>
-                    Get Keys
-                </button>
-                <div class="timer" id="timer3">30</div>
+                <h2>
+                    <i class="fab fa-youtube"></i>
+                    YouTube
+                </h2>
+                <a href="https://youtube.com/@vx_c1?si=QcfbjwFVNcxIlmXL" class="social-btn youtube-btn" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                    Visit Channel
+                </a>
+            </div>
+
+            <div class="social-card discord-card">
+                <div class="social-icon">
+                    <i class="fab fa-discord"></i>
+                </div>
+                <h2>
+                    <i class="fab fa-discord"></i>
+                    Discord
+                </h2>
+                <a href="https://discord.gg/Z3pTBcYq4T" class="social-btn discord-btn" target="_blank">
+                    <i class="fab fa-discord"></i>
+                    Join Server
+                </a>
+            </div>
+
+            <div class="social-card tiktok-card">
+                <div class="social-icon">
+                    <i class="fab fa-tiktok"></i>
+                </div>
+                <h2>
+                    <i class="fab fa-tiktok"></i>
+                    TikTok
+                </h2>
+                <a href="https://tiktok.com/@v.group1" class="social-btn tiktok-btn" target="_blank">
+                    <i class="fab fa-tiktok"></i>
+                    Follow Us
+                </a>
             </div>
         </div>
-        
-        <div class="keys-container" id="keys-container">
-            <!-- المفاتيح ستظهر هنا بعد إتمام الخطوات -->
-        </div>
-        
-        <footer>
-            <p>VNDXS Group &copy; 2024 - All Rights Reserved</p>
-        </footer>
     </div>
 
+    <div class="wave"></div>
+    <div class="wave"></div>
+
     <script>
-        // إنشاء تأثير النجوم في الخلفية
-        document.addEventListener('DOMContentLoaded', function() {
-            const starsContainer = document.getElementById('stars');
-            const starsCount = 100;
+        // Create stars
+        const starsContainer = document.getElementById('stars');
+        const starCount = 100;
+        
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
             
-            for (let i = 0; i < starsCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // حجم عشوائي للنجوم
-                const size = Math.random() * 3;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                // مواضع عشوائية
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                // تأخير عشوائي للوميض
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                
-                starsContainer.appendChild(star);
-            }
+            const size = Math.random() * 3 + 1;
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 20;
             
-            // تعريف المفاتيح
-            const keys = [
-                "VNDXS-HUB-2024-PRO",
-                "HITBOX-FREE-VIP-ACCESS",  
-                "AIMBOT-PRO-MAX-2024",
-                "VNDXS-SCRIPT-SEASON1",
-                "GAMING-HUB-PREMIUM-KEY",
-                "VNDXS-COMMUNITY-ACCESS",
-                "ROBLOX-HACK-PREMIUM24",
-                "VNDXS-SPECIAL-EDITION",
-                "PRO-GAMER-HUB-LICENSE",
-                "VNDXS-ULTIMATE-SCRIPT",
-                "FREE-HITBOX-PRO-KEY24",
-                "VNDXS-DEVELOPER-SPECIAL",
-                "PREMIUM-AIMBOT-LICENSE",
-                "VNDXS-GOLD-MEMBER-2024",
-                "SCRIPT-HUB-ELITE-KEY24",
-                "VNDXS-PLATINUM-ACCESS",
-                "PRO-SCRIPTER-VIP-2024",
-                "VNDXS-DIAMOND-EDITION",
-                "HUB-PREMIUM-LIFETIME",
-                "VNDXS-FINAL-SEASON-KEY"
-            ];
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDuration = `${duration}s, ${duration}s`;
+            star.style.animationDelay = `${delay}s`;
             
-            // متغيرات التحكم
-            let currentStep = 1;
-            let timers = {};
-            
-            // زر الخطوة الأولى
-            document.getElementById('step1-btn').addEventListener('click', function() {
-                startStepTimer(1);
-            });
-            
-            // زر الخطوة الثانية
-            document.getElementById('step2-btn').addEventListener('click', function() {
-                startStepTimer(2);
-            });
-            
-            // زر الخطوة الثالثة
-            document.getElementById('step3-btn').addEventListener('click', function() {
-                startStepTimer(3);
-            });
-            
-            // بدء المؤقت للخطوة
-            function startStepTimer(step) {
-                const stepElement = document.getElementById(`step${step}`);
-                const timerElement = document.getElementById(`timer${step}`);
-                const buttonElement = document.getElementById(`step${step}-btn`);
-                
-                // تحديث حالة الخطوة
-                stepElement.classList.remove('active');
-                stepElement.classList.add('completed');
-                buttonElement.classList.add('completed');
-                buttonElement.innerHTML = '<i class="fas fa-check"></i> Completed';
-                
-                // إظهار المؤقت
-                timerElement.style.display = 'block';
-                
-                // بدء العد التنازلي
-                let timeLeft = 30;
-                timers[step] = setInterval(function() {
-                    timeLeft--;
-                    timerElement.textContent = timeLeft;
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(timers[step]);
-                        timerElement.style.display = 'none';
-                        
-                        // إذا كانت هذه ليست الخطوة الأخيرة، فتفعيل الخطوة التالية
-                        if (step < 3) {
-                            const nextStep = step + 1;
-                            document.getElementById(`step${nextStep}`).classList.add('active');
-                            document.getElementById(`step${nextStep}-btn`).style.display = 'inline-flex';
-                        } else {
-                            // إذا كانت الخطوة الأخيرة، عرض المفاتيح
-                            showKeys();
-                        }
-                    }
-                }, 1000);
-            }
-            
-            // عرض المفاتيح
-            function showKeys() {
-                const keysContainer = document.getElementById('keys-container');
-                keysContainer.style.display = 'flex';
-                
-                keys.forEach(key => {
-                    const keyElement = document.createElement('div');
-                    keyElement.classList.add('key');
-                    keyElement.textContent = key;
-                    keysContainer.appendChild(keyElement);
-                });
-            }
-        });
+            starsContainer.appendChild(star);
+        }
     </script>
 </body>
 </html>
