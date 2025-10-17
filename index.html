@@ -17,7 +17,7 @@
 
         body {
             font-family: "PT Sans", sans-serif;
-            background: linear-gradient(-45deg, #000000, #0a0a2a, #000033, #001a33);
+            background: linear-gradient(-45deg, #000000, #1a1a1a, #0d0d0d, #262626);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
             color: white;
@@ -47,7 +47,7 @@
             padding: 15px 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
-            background: rgba(10, 10, 42, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -78,7 +78,7 @@
         }
 
         .nav-btn:hover {
-            background: rgba(114, 137, 218, 0.7);
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
@@ -100,35 +100,25 @@
         }
 
         .social-card {
-            background: rgba(10, 10, 42, 0.8);
+            background: rgba(30, 30, 30, 0.9);
             border-radius: 15px;
             padding: 40px 30px;
             text-align: center;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s;
         }
 
         .social-card:hover {
             transform: translateY(-10px);
+            background: rgba(40, 40, 40, 0.95);
         }
 
         .social-icon {
             font-size: 3rem;
             margin-bottom: 20px;
-        }
-
-        .youtube-card .social-icon {
-            color: #FF0000;
-        }
-
-        .discord-card .social-icon {
-            color: #7289da;
-        }
-
-        .tiktok-card .social-icon {
-            color: #69C9D0;
+            color: #ffffff;
         }
 
         .social-card h2 {
@@ -155,39 +145,14 @@
             transition: all 0.3s;
             text-decoration: none;
             font-family: "PT Sans", sans-serif;
+            background: white;
+            color: black;
         }
 
-        .youtube-btn {
-            background: #FF0000;
-            color: white;
-        }
-
-        .youtube-btn:hover {
-            background: #CC0000;
+        .social-btn:hover {
+            background: #e0e0e0;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
-        }
-
-        .discord-btn {
-            background: #7289da;
-            color: white;
-        }
-
-        .discord-btn:hover {
-            background: #5b6eae;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(114, 137, 218, 0.3);
-        }
-
-        .tiktok-btn {
-            background: #69C9D0;
-            color: white;
-        }
-
-        .tiktok-btn:hover {
-            background: #4FA8AF;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(105, 201, 208, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
         }
 
         .hero {
@@ -200,7 +165,7 @@
             font-size: 4rem;
             margin-bottom: 20px;
             color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         .hero p {
@@ -314,7 +279,7 @@
         </section>
 
         <div class="social-container">
-            <div class="social-card youtube-card">
+            <div class="social-card">
                 <div class="social-icon">
                     <i class="fab fa-youtube"></i>
                 </div>
@@ -322,13 +287,13 @@
                     <i class="fab fa-youtube"></i>
                     YouTube
                 </h2>
-                <a href="https://youtube.com/@vx_c1?si=QcfbjwFVNcxIlmXL" class="social-btn youtube-btn" target="_blank">
+                <a href="https://youtube.com/@vx_c1?si=QcfbjwFVNcxIlmXL" class="social-btn" target="_blank">
                     <i class="fab fa-youtube"></i>
                     Visit Channel
                 </a>
             </div>
 
-            <div class="social-card discord-card">
+            <div class="social-card">
                 <div class="social-icon">
                     <i class="fab fa-discord"></i>
                 </div>
@@ -336,13 +301,13 @@
                     <i class="fab fa-discord"></i>
                     Discord
                 </h2>
-                <a href="https://discord.gg/Z3pTBcYq4T" class="social-btn discord-btn" target="_blank">
+                <a href="https://discord.gg/Z3pTBcYq4T" class="social-btn" target="_blank">
                     <i class="fab fa-discord"></i>
                     Join Server
                 </a>
             </div>
 
-            <div class="social-card tiktok-card">
+            <div class="social-card">
                 <div class="social-icon">
                     <i class="fab fa-tiktok"></i>
                 </div>
@@ -350,7 +315,7 @@
                     <i class="fab fa-tiktok"></i>
                     TikTok
                 </h2>
-                <a href="https://tiktok.com/@v.group1" class="social-btn tiktok-btn" target="_blank">
+                <a href="https://tiktok.com/@v.group1" class="social-btn" target="_blank">
                     <i class="fab fa-tiktok"></i>
                     Follow Us
                 </a>
@@ -362,7 +327,6 @@
     <div class="wave"></div>
 
     <script>
-        // Create stars
         const starsContainer = document.getElementById('stars');
         const starCount = 100;
         
