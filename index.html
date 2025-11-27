@@ -14,291 +14,923 @@
         .tab-active { background: rgba(255, 255, 255, 0.15); border-bottom: 2px solid #3b82f6; }
         .browser-content::-webkit-scrollbar { display: none; }
         .browser-content { -ms-overflow-style: none; scrollbar-width: none; }
+        .command-palette { background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px); }
+        
+        /* أنيميشنات */
+        .slide-in-right { animation: slideInRight 0.3s ease-out; }
+        .slide-in-left { animation: slideInLeft 0.3s ease-out; }
+        .fade-in { animation: fadeIn 0.2s ease-out; }
+        .scale-in { animation: scaleIn 0.2s ease-out; }
+        .bounce-in { animation: bounceIn 0.5s ease-out; }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .tab-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .smooth-transition { transition: all 0.3s ease; }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1f2937;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        
+        .hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .hover-lift:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .glow-effect:hover {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        }
+
+        /* تباديل الإعدادات */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4b5563;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white font-arabic">
-    <div class="browser-frame h-screen flex flex-col">
+    <!-- المتصفح الرئيسي -->
+    <div id="browser" class="browser-frame h-screen flex flex-col">
+        <!-- لوحة الأوامر -->
+        <div id="commandPalette" class="command-palette fixed inset-0 z-50 hidden items-start justify-center pt-20">
+            <div class="bg-gray-800 rounded-2xl w-full max-w-lg mx-4 border border-gray-600 shadow-2xl scale-in">
+                <div class="p-4 border-b border-gray-700">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="command" class="w-5 h-5 text-blue-400"></i>
+                        <input type="text" id="commandInput" class="flex-1 bg-transparent outline-none text-lg" placeholder="اكتب أمراً... (جديد، إعدادات، إشارات، تاريخ)">
+                        <kbd class="px-2 py-1 bg-gray-700 rounded text-xs">ESC</kbd>
+                    </div>
+                </div>
+                <div id="commandResults" class="max-h-64 overflow-y-auto custom-scrollbar">
+                    <div class="command-item p-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer flex items-center gap-3">
+                        <i data-lucide="plus" class="w-4 h-4 text-green-400"></i>
+                        <div>
+                            <div class="font-medium">علامة تبويب جديدة</div>
+                            <div class="text-gray-400 text-sm">افتح علامة تبويب جديدة</div>
+                        </div>
+                    </div>
+                    <div class="command-item p-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer flex items-center gap-3">
+                        <i data-lucide="settings" class="w-4 h-4 text-blue-400"></i>
+                        <div>
+                            <div class="font-medium">الإعدادات</div>
+                            <div class="text-gray-400 text-sm">إعدادات المتصفح</div>
+                        </div>
+                    </div>
+                    <div class="command-item p-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer flex items-center gap-3">
+                        <i data-lucide="bookmark" class="w-4 h-4 text-yellow-400"></i>
+                        <div>
+                            <div class="font-medium">الإشارات المرجعية</div>
+                            <div class="text-gray-400 text-sm">عرض الإشارات المرجعية</div>
+                        </div>
+                    </div>
+                    <div class="command-item p-3 border-b border-gray-700 hover:bg-gray-700 cursor-pointer flex items-center gap-3">
+                        <i data-lucide="history" class="w-4 h-4 text-purple-400"></i>
+                        <div>
+                            <div class="font-medium">سجل التصفح</div>
+                            <div class="text-gray-400 text-sm">عرض تاريخ التصفح</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- إعدادات المتصفح -->
+        <div id="settingsPanel" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4">
+            <div class="bg-gray-800 rounded-2xl w-full max-w-md border border-gray-600 scale-in">
+                <div class="p-6 border-b border-gray-700">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <i data-lucide="settings" class="w-6 h-6 text-blue-400"></i>
+                        إعدادات المتصفح
+                    </h2>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover-lift">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="moon" class="w-4 h-4"></i>
+                            الوضع الليلي
+                        </span>
+                        <label class="switch">
+                            <input type="checkbox" id="darkModeToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover-lift">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="shield" class="w-4 h-4"></i>
+                            حظر الإعلانات
+                        </span>
+                        <label class="switch">
+                            <input type="checkbox" id="adBlockToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover-lift">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="eye-off" class="w-4 h-4"></i>
+                            حماية من التتبع
+                        </span>
+                        <label class="switch">
+                            <input type="checkbox" id="privacyToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover-lift">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="save" class="w-4 h-4"></i>
+                            حفظ كلمات المرور
+                        </span>
+                        <label class="switch">
+                            <input type="checkbox" id="savePasswordsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-700">
+                    <button id="closeSettings" class="w-full py-3 bg-gray-700 hover:bg-gray-600 rounded-xl transition-all duration-300 glow-effect">
+                        حفظ وإغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- إدارة كلمات المرور -->
+        <div id="passwordsPanel" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4">
+            <div class="bg-gray-800 rounded-2xl w-full max-w-2xl border border-gray-600 scale-in">
+                <div class="p-6 border-b border-gray-700">
+                    <h2 class="text-xl font-bold flex items-center gap-3">
+                        <i data-lucide="key" class="w-6 h-6 text-green-400"></i>
+                        إدارة كلمات المرور
+                    </h2>
+                </div>
+                <div class="p-6 max-h-96 overflow-y-auto custom-scrollbar">
+                    <div id="passwordsList" class="space-y-3">
+                        <div class="text-center py-8 text-gray-400">
+                            <i data-lucide="key" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>لا توجد كلمات مرور محفوظة</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-700">
+                    <button id="closePasswords" class="w-full py-3 bg-gray-700 hover:bg-gray-600 rounded-xl transition-all duration-300">
+                        إغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- التاريخ والبحث المتقدم -->
+        <div id="historyPanel" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4">
+            <div class="bg-gray-800 rounded-2xl w-full max-w-4xl border border-gray-600 scale-in">
+                <div class="p-6 border-b border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-bold flex items-center gap-3">
+                            <i data-lucide="history" class="w-6 h-6 text-purple-400"></i>
+                            سجل التصفح والبحث
+                        </h2>
+                        <button id="clearHistory" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors text-sm">
+                            مسح السجل
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <input type="text" id="historySearch" placeholder="ابحث في السجل..." 
+                               class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="p-6 max-h-96 overflow-y-auto custom-scrollbar">
+                    <div id="historyList" class="space-y-3">
+                        <div class="text-center py-8 text-gray-400">
+                            <i data-lucide="history" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>لا يوجد سجل تصفح</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- واجهة المتصفح -->
         <div class="bg-gray-800 border-b border-gray-700">
             <div class="flex items-center px-2 pt-2 bg-gray-800">
-                <button id="newTabBtn" class="w-8 h-8 rounded-full hover:bg-gray-700 flex items-center justify-center mr-1">
+                <button id="newTabBtn" class="w-8 h-8 rounded-full hover:bg-gray-700 flex items-center justify-center mr-1 smooth-transition glow-effect">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
                 
-                <div id="tabsContainer" class="flex flex-1 overflow-x-auto">
-                    <div class="tab tab-active flex items-center px-3 py-2 mr-1 rounded-t-lg min-w-32" data-tab-id="1">
+                <div id="tabsContainer" class="flex flex-1 overflow-x-auto custom-scrollbar">
+                    <div class="tab tab-active flex items-center px-3 py-2 mr-1 rounded-t-lg min-w-32 tab-transition hover-lift" data-tab-id="1">
                         <i data-lucide="globe" class="w-3 h-3 ml-1 text-blue-400"></i>
                         <span class="truncate flex-1 text-xs">الصفحة الرئيسية</span>
-                        <button class="tab-close w-3 h-3 hover:bg-gray-600 rounded-full flex items-center justify-center ml-1">
+                        <button class="tab-close w-3 h-3 hover:bg-gray-600 rounded-full flex items-center justify-center ml-1 smooth-transition">
                             <i data-lucide="x" class="w-2 h-2"></i>
                         </button>
                     </div>
                 </div>
+
+                <button id="commandBtn" class="w-8 h-8 rounded-full hover:bg-gray-700 flex items-center justify-center ml-1 smooth-transition glow-effect" title="لوحة الأوامر (Ctrl+K)">
+                    <i data-lucide="command" class="w-4 h-4"></i>
+                </button>
             </div>
 
             <div class="flex items-center px-2 py-2 gap-2">
                 <div class="flex items-center gap-1">
-                    <button id="backBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center">
+                    <button id="backBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center smooth-transition glow-effect">
                         <i data-lucide="chevron-right" class="w-3 h-3"></i>
                     </button>
-                    <button id="forwardBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center">
+                    <button id="forwardBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center smooth-transition glow-effect">
                         <i data-lucide="chevron-left" class="w-3 h-3"></i>
                     </button>
-                    <button id="refreshBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center">
+                    <button id="refreshBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center smooth-transition glow-effect">
                         <i data-lucide="refresh-cw" class="w-3 h-3"></i>
                     </button>
                 </div>
 
                 <div class="flex-1 flex items-center gap-1">
-                    <div class="url-bar flex-1 flex items-center rounded-full px-3 py-1 border border-gray-600">
-                        <i data-lucide="lock" class="w-3 h-3 ml-1 text-green-400"></i>
+                    <div class="url-bar flex-1 flex items-center rounded-full px-3 py-1 border border-gray-600 smooth-transition glow-effect">
+                        <i data-lucide="lock" class="w-3 h-3 ml-1 text-green-400" id="securityIcon"></i>
                         <input type="text" id="urlInput" class="flex-1 bg-transparent outline-none text-xs w-full" placeholder="ابحث أو أدخل عنوان URL" value="https://www.google.com">
+                        <button id="historyDropdown" class="w-5 h-5 hover:bg-gray-600 rounded flex items-center justify-center smooth-transition">
+                            <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        </button>
                     </div>
-                    <button id="goBtn" class="w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center">
+                    <button id="goBtn" class="w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center smooth-transition glow-effect">
                         <i data-lucide="search" class="w-3 h-3"></i>
                     </button>
                 </div>
 
                 <div class="flex items-center gap-1">
-                    <button id="bookmarksBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center">
+                    <button id="historyBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center smooth-transition glow-effect">
+                        <i data-lucide="history" class="w-3 h-3"></i>
+                    </button>
+                    <button id="passwordsBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center smooth-transition glow-effect">
+                        <i data-lucide="key" class="w-3 h-3"></i>
+                    </button>
+                    <button id="bookmarksBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center smooth-transition glow-effect">
                         <i data-lucide="bookmark" class="w-3 h-3"></i>
                     </button>
-                    <button id="menuBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center">
-                        <i data-lucide="menu" class="w-3 h-3"></i>
+                    <button id="settingsBtn" class="w-7 h-7 rounded-full hover:bg-gray-700 flex items-center justify-center smooth-transition glow-effect">
+                        <i data-lucide="settings" class="w-3 h-3"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <div id="browserContent" class="flex-1 bg-white">
-            <iframe id="webView" class="w-full h-full browser-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" src="https://www.google.com/webhp?igu=1" frameborder="0"></iframe>
+            <iframe id="webView" class="w-full h-full browser-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-storage-access-by-user-activation" src="https://www.google.com/webhp?igu=1" frameborder="0"></iframe>
         </div>
 
-        <div id="bookmarksPanel" class="hidden absolute top-24 right-2 left-2 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50">
+        <!-- الإشارات المرجعية -->
+        <div id="bookmarksPanel" class="hidden absolute top-24 right-2 left-2 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50 scale-in">
             <div class="p-3 border-b border-gray-700">
                 <h3 class="font-bold flex items-center gap-2 text-sm">
                     <i data-lucide="bookmark" class="w-4 h-4"></i>
                     الإشارات المرجعية
                 </h3>
             </div>
-            <div class="p-2 max-h-64 overflow-y-auto">
-                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm" data-url="https://www.google.com">
+            <div class="p-2 max-h-64 overflow-y-auto custom-scrollbar">
+                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm smooth-transition hover-lift" data-url="https://www.google.com">
                     <i data-lucide="search" class="w-4 h-4 text-blue-400"></i>
                     <span>Google</span>
                 </div>
-                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm" data-url="https://www.youtube.com">
+                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm smooth-transition hover-lift" data-url="https://www.youtube.com">
                     <i data-lucide="play" class="w-4 h-4 text-red-400"></i>
                     <span>YouTube</span>
                 </div>
-                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm" data-url="https://twitter.com">
+                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm smooth-transition hover-lift" data-url="https://twitter.com">
                     <i data-lucide="message-circle" class="w-4 h-4 text-blue-400"></i>
                     <span>Twitter</span>
-                </div>
-                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm" data-url="https://www.wikipedia.org">
-                    <i data-lucide="book-open" class="w-4 h-4 text-green-400"></i>
-                    <span>Wikipedia</span>
-                </div>
-                <div class="bookmark-item p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm" data-url="https://github.com">
-                    <i data-lucide="code" class="w-4 h-4 text-gray-400"></i>
-                    <span>GitHub</span>
                 </div>
             </div>
         </div>
 
-        <div id="menuPanel" class="hidden absolute bottom-20 right-2 w-48 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50">
-            <div class="p-2">
-                <button class="menu-item w-full p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm">
-                    <i data-lucide="download" class="w-4 h-4"></i>
-                    <span>تحميل الصفحة</span>
-                </button>
-                <button class="menu-item w-full p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm">
-                    <i data-lucide="settings" class="w-4 h-4"></i>
-                    <span>الإعدادات</span>
-                </button>
-                <button class="menu-item w-full p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm">
-                    <i data-lucide="moon" class="w-4 h-4"></i>
-                    <span>الوضع الليلي</span>
-                </button>
+        <!-- قائمة التاريخ السريعة -->
+        <div id="quickHistory" class="hidden absolute top-24 right-2 left-2 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50 scale-in">
+            <div class="p-3 border-b border-gray-700">
+                <h3 class="font-bold flex items-center gap-2 text-sm">
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+                    المواقع الأخيرة
+                </h3>
+            </div>
+            <div class="p-2 max-h-64 overflow-y-auto custom-scrollbar" id="quickHistoryList">
+                <!-- سيتم ملؤها ديناميكياً -->
             </div>
         </div>
     </div>
 
+    <!-- نظام الرسائل -->
+    <div id="messageSystem" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
     <script>
         lucide.createIcons();
 
-        let tabs = [
-            { id: 1, title: "Google", url: "https://www.google.com/webhp?igu=1", icon: "globe" }
-        ];
-        let activeTabId = 1;
-        let tabCounter = 1;
+        // نظام التخزين
+        const BrowserStorage = {
+            get: (key) => {
+                try {
+                    return JSON.parse(localStorage.getItem(`vndxs_browser_${key}`));
+                } catch {
+                    return null;
+                }
+            },
+            
+            set: (key, value) => {
+                localStorage.setItem(`vndxs_browser_${key}`, JSON.stringify(value));
+            },
+            
+            remove: (key) => {
+                localStorage.removeItem(`vndxs_browser_${key}`);
+            }
+        };
 
-        const tabsContainer = document.getElementById('tabsContainer');
-        const webView = document.getElementById('webView');
-        const urlInput = document.getElementById('urlInput');
-        const bookmarksPanel = document.getElementById('bookmarksPanel');
-        const menuPanel = document.getElementById('menuPanel');
-
-        document.getElementById('newTabBtn').addEventListener('click', () => createNewTab("https://www.google.com/webhp?igu=1"));
-        document.getElementById('goBtn').addEventListener('click', navigateToUrl);
-        document.getElementById('refreshBtn').addEventListener('click', refreshPage);
-        document.getElementById('backBtn').addEventListener('click', goBack);
-        document.getElementById('forwardBtn').addEventListener('click', goForward);
-        document.getElementById('bookmarksBtn').addEventListener('click', toggleBookmarks);
-        document.getElementById('menuBtn').addEventListener('click', toggleMenu);
-        document.getElementById('urlInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') navigateToUrl();
-        });
-
-        function createNewTab(url = "https://www.google.com/webhp?igu=1") {
-            tabCounter++;
-            const newTab = {
-                id: tabCounter,
-                title: "علامة تبويب جديدة",
-                url: url,
-                icon: "globe"
-            };
-            tabs.push(newTab);
-            renderTabs();
-            switchToTab(tabCounter);
-        }
-
-        function renderTabs() {
-            tabsContainer.innerHTML = '';
-            tabs.forEach(tab => {
-                const tabElement = document.createElement('div');
-                tabElement.className = `tab flex items-center px-2 py-1 mr-1 rounded-t-lg min-w-28 text-xs ${tab.id === activeTabId ? 'tab-active' : ''}`;
-                tabElement.setAttribute('data-tab-id', tab.id);
+        // نظام الرسائل
+        const MessageSystem = {
+            show: (message, type = 'info', duration = 3000) => {
+                const messageEl = document.createElement('div');
+                const colors = {
+                    info: 'blue',
+                    success: 'green',
+                    warning: 'yellow',
+                    error: 'red'
+                };
                 
-                tabElement.innerHTML = `
-                    <i data-lucide="${tab.icon}" class="w-3 h-3 ml-1 text-blue-400"></i>
-                    <span class="truncate flex-1">${tab.title}</span>
-                    <button class="tab-close w-3 h-3 hover:bg-gray-600 rounded-full flex items-center justify-center ml-1">
-                        <i data-lucide="x" class="w-2 h-2"></i>
-                    </button>
+                messageEl.className = `p-3 rounded-lg border border-${colors[type]}-500/20 bg-${colors[type]}-500/10 text-white fade-in bounce-in`;
+                messageEl.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="${type === 'success' ? 'check' : type === 'error' ? 'x' : type === 'warning' ? 'alert-triangle' : 'info'}" 
+                           class="w-4 h-4 text-${colors[type]}-400"></i>
+                        <span>${message}</span>
+                    </div>
                 `;
                 
-                tabElement.addEventListener('click', (e) => {
-                    if (!e.target.closest('.tab-close')) {
-                        switchToTab(tab.id);
-                    }
+                document.getElementById('messageSystem').appendChild(messageEl);
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    messageEl.classList.add('fade-out');
+                    setTimeout(() => messageEl.remove(), 300);
+                }, duration);
+            }
+        };
+
+        // بدء المتصفح مباشرة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBrowser();
+            MessageSystem.show('مرحباً بك في متصفح VNDXS!', 'success');
+        });
+
+        function initializeBrowser() {
+            let tabs = BrowserStorage.get('tabs') || [
+                { id: 1, title: "Google", url: "https://www.google.com/webhp?igu=1", icon: "globe" }
+            ];
+            let activeTabId = BrowserStorage.get('activeTab') || 1;
+            let tabCounter = BrowserStorage.get('tabCounter') || 1;
+            let history = BrowserStorage.get('history') || [];
+            let passwords = BrowserStorage.get('passwords') || [];
+            let settings = BrowserStorage.get('settings') || {
+                darkMode: true,
+                adBlock: true,
+                privacy: true,
+                savePasswords: true
+            };
+
+            const elements = {
+                tabsContainer: document.getElementById('tabsContainer'),
+                webView: document.getElementById('webView'),
+                urlInput: document.getElementById('urlInput'),
+                bookmarksPanel: document.getElementById('bookmarksPanel'),
+                commandPalette: document.getElementById('commandPalette'),
+                settingsPanel: document.getElementById('settingsPanel'),
+                passwordsPanel: document.getElementById('passwordsPanel'),
+                historyPanel: document.getElementById('historyPanel'),
+                commandInput: document.getElementById('commandInput'),
+                quickHistory: document.getElementById('quickHistory'),
+                historySearch: document.getElementById('historySearch')
+            };
+
+            // تحديث الإعدادات
+            function updateSettings() {
+                document.getElementById('darkModeToggle').checked = settings.darkMode;
+                document.getElementById('adBlockToggle').checked = settings.adBlock;
+                document.getElementById('privacyToggle').checked = settings.privacy;
+                document.getElementById('savePasswordsToggle').checked = settings.savePasswords;
+            }
+
+            // حفظ البيانات
+            function saveData() {
+                BrowserStorage.set('tabs', tabs);
+                BrowserStorage.set('activeTab', activeTabId);
+                BrowserStorage.set('tabCounter', tabCounter);
+                BrowserStorage.set('history', history);
+                BrowserStorage.set('passwords', passwords);
+                BrowserStorage.set('settings', settings);
+            }
+
+            // إضافة إلى التاريخ
+            function addToHistory(url, title) {
+                if (!settings.privacy) return;
+                
+                const historyItem = {
+                    url,
+                    title: title || url,
+                    timestamp: new Date().toISOString(),
+                    id: Date.now()
+                };
+                
+                history.unshift(historyItem);
+                history = history.slice(0, 100);
+                saveData();
+            }
+
+            // عرض التاريخ السريع
+            function showQuickHistory() {
+                const quickList = document.getElementById('quickHistoryList');
+                quickList.innerHTML = '';
+                
+                history.slice(0, 10).forEach(item => {
+                    const historyEl = document.createElement('div');
+                    historyEl.className = 'p-2 hover:bg-gray-700 rounded cursor-pointer flex items-center gap-2 text-sm smooth-transition hover-lift';
+                    historyEl.innerHTML = `
+                        <i data-lucide="clock" class="w-3 h-3 text-gray-400"></i>
+                        <span class="flex-1 truncate">${item.title}</span>
+                    `;
+                    historyEl.onclick = () => {
+                        elements.urlInput.value = item.url;
+                        navigateToUrl();
+                        elements.quickHistory.classList.add('hidden');
+                    };
+                    quickList.appendChild(historyEl);
                 });
                 
-                const closeBtn = tabElement.querySelector('.tab-close');
-                closeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    closeTab(tab.id);
-                });
+                elements.quickHistory.classList.remove('hidden');
+            }
+
+            // نظام البحث في التاريخ
+            function searchHistory(query) {
+                const filtered = history.filter(item => 
+                    item.title.toLowerCase().includes(query.toLowerCase()) || 
+                    item.url.toLowerCase().includes(query.toLowerCase())
+                );
                 
-                tabsContainer.appendChild(tabElement);
-            });
-            lucide.createIcons();
-        }
-
-        function switchToTab(tabId) {
-            activeTabId = tabId;
-            const tab = tabs.find(t => t.id === tabId);
-            if (tab) {
-                webView.src = tab.url;
-                urlInput.value = tab.url;
-                updateTabTitle(tabId, tab.title);
-            }
-            renderTabs();
-        }
-
-        function closeTab(tabId) {
-            if (tabs.length === 1) return;
-            
-            const tabIndex = tabs.findIndex(t => t.id === tabId);
-            tabs.splice(tabIndex, 1);
-            
-            if (activeTabId === tabId) {
-                activeTabId = tabs[tabs.length - 1].id;
-                switchToTab(activeTabId);
-            }
-            
-            renderTabs();
-        }
-
-        function navigateToUrl() {
-            let url = urlInput.value.trim();
-            if (!url) return;
-            
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                if (url.includes('.') && !url.includes(' ')) {
-                    url = 'https://' + url;
-                } else {
-                    url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+                const historyList = document.getElementById('historyList');
+                historyList.innerHTML = '';
+                
+                if (filtered.length === 0) {
+                    historyList.innerHTML = `
+                        <div class="text-center py-8 text-gray-400">
+                            <i data-lucide="search" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>لا توجد نتائج للبحث</p>
+                        </div>
+                    `;
+                    return;
                 }
+                
+                filtered.forEach(item => {
+                    const historyEl = document.createElement('div');
+                    historyEl.className = 'p-3 hover:bg-gray-700 rounded cursor-pointer border border-gray-600 smooth-transition hover-lift';
+                    historyEl.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium truncate">${item.title}</div>
+                                <div class="text-gray-400 text-sm truncate">${item.url}</div>
+                            </div>
+                            <div class="text-gray-500 text-xs whitespace-nowrap">
+                                ${new Date(item.timestamp).toLocaleDateString('ar-EG')}
+                            </div>
+                        </div>
+                    `;
+                    historyEl.onclick = () => {
+                        elements.urlInput.value = item.url;
+                        navigateToUrl();
+                        elements.historyPanel.classList.add('hidden');
+                    };
+                    historyList.appendChild(historyEl);
+                });
+                
+                lucide.createIcons();
             }
-            
-            const activeTab = tabs.find(t => t.id === activeTabId);
-            if (activeTab) {
-                activeTab.url = url;
-                webView.src = url;
-                updateTabTitle(activeTabId, "جاري التحميل...");
+
+            // نظام كلمات المرور
+            function savePassword(website, username, password) {
+                if (!settings.savePasswords) return;
+                
+                const existingIndex = passwords.findIndex(p => p.website === website && p.username === username);
+                const passwordItem = {
+                    website,
+                    username,
+                    password,
+                    id: Date.now(),
+                    timestamp: new Date().toISOString()
+                };
+                
+                if (existingIndex !== -1) {
+                    passwords[existingIndex] = passwordItem;
+                } else {
+                    passwords.push(passwordItem);
+                }
+                
+                saveData();
+                MessageSystem.show('تم حفظ كلمة المرور', 'success');
             }
-        }
 
-        function refreshPage() {
-            webView.src = webView.src;
-        }
-
-        function goBack() {
-            try {
-                webView.contentWindow.history.back();
-            } catch (e) {
-                console.log('لا يمكن الرجوع');
+            function showPasswords() {
+                const passwordsList = document.getElementById('passwordsList');
+                passwordsList.innerHTML = '';
+                
+                if (passwords.length === 0) {
+                    passwordsList.innerHTML = `
+                        <div class="text-center py-8 text-gray-400">
+                            <i data-lucide="key" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>لا توجد كلمات مرور محفوظة</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                passwords.forEach(item => {
+                    const passwordEl = document.createElement('div');
+                    passwordEl.className = 'p-3 bg-gray-700/50 rounded-lg border border-gray-600 smooth-transition hover-lift';
+                    passwordEl.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="font-medium">${item.website}</div>
+                            <button onclick="copyToClipboard('${item.password}')" class="text-blue-400 hover:text-blue-300 smooth-transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="text-sm text-gray-300">المستخدم: ${item.username}</div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            ${new Date(item.timestamp).toLocaleDateString('ar-EG')}
+                        </div>
+                    `;
+                    passwordsList.appendChild(passwordEl);
+                });
+                
+                lucide.createIcons();
+                elements.passwordsPanel.classList.remove('hidden');
             }
-        }
 
-        function goForward() {
-            try {
-                webView.contentWindow.history.forward();
-            } catch (e) {
-                console.log('لا يمكن التقدم');
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text);
+                MessageSystem.show('تم نسخ كلمة المرور', 'success');
             }
-        }
 
-        function toggleBookmarks() {
-            bookmarksPanel.classList.toggle('hidden');
-            menuPanel.classList.add('hidden');
-        }
+            // إنشاء تبويب جديد
+            function createNewTab(url = "https://www.google.com/webhp?igu=1") {
+                tabCounter++;
+                const newTab = {
+                    id: tabCounter,
+                    title: "علامة تبويب جديدة",
+                    url: url,
+                    icon: "globe"
+                };
+                tabs.push(newTab);
+                renderTabs();
+                switchToTab(tabCounter);
+                MessageSystem.show('تم إنشاء علامة تبويب جديدة', 'success');
+            }
 
-        function toggleMenu() {
-            menuPanel.classList.toggle('hidden');
-            bookmarksPanel.classList.add('hidden');
-        }
+            // عرض التبويبات
+            function renderTabs() {
+                elements.tabsContainer.innerHTML = '';
+                tabs.forEach(tab => {
+                    const tabElement = document.createElement('div');
+                    tabElement.className = `tab flex items-center px-2 py-1 mr-1 rounded-t-lg min-w-28 text-xs tab-transition hover-lift ${tab.id === activeTabId ? 'tab-active' : ''}`;
+                    tabElement.setAttribute('data-tab-id', tab.id);
+                    
+                    tabElement.innerHTML = `
+                        <i data-lucide="${tab.icon}" class="w-3 h-3 ml-1 text-blue-400"></i>
+                        <span class="truncate flex-1">${tab.title}</span>
+                        <button class="tab-close w-3 h-3 hover:bg-gray-600 rounded-full flex items-center justify-center ml-1 smooth-transition">
+                            <i data-lucide="x" class="w-2 h-2"></i>
+                        </button>
+                    `;
+                    
+                    tabElement.addEventListener('click', (e) => {
+                        if (!e.target.closest('.tab-close')) {
+                            switchToTab(tab.id);
+                        }
+                    });
+                    
+                    const closeBtn = tabElement.querySelector('.tab-close');
+                    closeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        closeTab(tab.id);
+                    });
+                    
+                    elements.tabsContainer.appendChild(tabElement);
+                });
+                lucide.createIcons();
+            }
 
-        function updateTabTitle(tabId, title) {
-            const tab = tabs.find(t => t.id === tabId);
-            if (tab) {
-                tab.title = title.substring(0, 20) + (title.length > 20 ? '...' : '');
+            // التبديل بين التبويبات
+            function switchToTab(tabId) {
+                activeTabId = tabId;
+                const tab = tabs.find(t => t.id === tabId);
+                if (tab) {
+                    elements.webView.src = tab.url;
+                    elements.urlInput.value = tab.url;
+                    updateTabTitle(tabId, tab.title);
+                    updateSecurityIcon(tab.url);
+                }
                 renderTabs();
             }
-        }
 
-        document.querySelectorAll('.bookmark-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const url = item.getAttribute('data-url');
-                urlInput.value = url;
-                navigateToUrl();
-                bookmarksPanel.classList.add('hidden');
+            // إغلاق التبويب
+            function closeTab(tabId) {
+                if (tabs.length === 1) return;
+                
+                const tabIndex = tabs.findIndex(t => t.id === tabId);
+                const closedTab = tabs[tabIndex];
+                tabs.splice(tabIndex, 1);
+                
+                if (activeTabId === tabId) {
+                    activeTabId = tabs[tabs.length - 1].id;
+                    switchToTab(activeTabId);
+                }
+                
+                renderTabs();
+                MessageSystem.show('تم إغلاق علامة التبويب', 'info');
+            }
+
+            // التنقل إلى URL
+            function navigateToUrl() {
+                let url = elements.urlInput.value.trim();
+                if (!url) return;
+                
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    if (url.includes('.') && !url.includes(' ')) {
+                        url = 'https://' + url;
+                    } else {
+                        url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+                    }
+                }
+                
+                const activeTab = tabs.find(t => t.id === activeTabId);
+                if (activeTab) {
+                    activeTab.url = url;
+                    elements.webView.src = url;
+                    updateTabTitle(activeTabId, "جاري التحميل...");
+                    updateSecurityIcon(url);
+                    addToHistory(url, "جاري التحميل...");
+                }
+            }
+
+            // تحديث الصفحة
+            function refreshPage() {
+                elements.webView.src = elements.webView.src;
+                MessageSystem.show('جاري تحديث الصفحة...', 'info');
+            }
+
+            // الذهاب للخلف
+            function goBack() {
+                try {
+                    elements.webView.contentWindow.history.back();
+                    MessageSystem.show('الرجوع للخلف', 'info');
+                } catch (e) {
+                    MessageSystem.show('لا يمكن الرجوع', 'warning');
+                }
+            }
+
+            // الذهاب للأمام
+            function goForward() {
+                try {
+                    elements.webView.contentWindow.history.forward();
+                    MessageSystem.show('التقدم للأمام', 'info');
+                } catch (e) {
+                    MessageSystem.show('لا يمكن التقدم', 'warning');
+                }
+            }
+
+            // تبديل الإشارات المرجعية
+            function toggleBookmarks() {
+                elements.bookmarksPanel.classList.toggle('hidden');
+                elements.commandPalette.classList.add('hidden');
+            }
+
+            // تبديل الإعدادات
+            function toggleSettings() {
+                updateSettings();
+                elements.settingsPanel.classList.toggle('hidden');
+                elements.commandPalette.classList.add('hidden');
+            }
+
+            // تبديل كلمات المرور
+            function togglePasswords() {
+                showPasswords();
+            }
+
+            // تبديل التاريخ
+            function toggleHistory() {
+                elements.historyPanel.classList.toggle('hidden');
+                elements.commandPalette.classList.add('hidden');
+            }
+
+            // تحديث عنوان التبويب
+            function updateTabTitle(tabId, title) {
+                const tab = tabs.find(t => t.id === tabId);
+                if (tab) {
+                    tab.title = title.substring(0, 20) + (title.length > 20 ? '...' : '');
+                    renderTabs();
+                }
+            }
+
+            // تحديث أيقونة الأمان
+            function updateSecurityIcon(url) {
+                const icon = document.getElementById('securityIcon');
+                if (url.startsWith('https://')) {
+                    icon.className = 'w-3 h-3 ml-1 text-green-400';
+                    icon.setAttribute('data-lucide', 'lock');
+                } else {
+                    icon.className = 'w-3 h-3 ml-1 text-red-400';
+                    icon.setAttribute('data-lucide', 'unlock');
+                }
+                lucide.createIcons();
+            }
+
+            // أحداث لوحة الأوامر
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    elements.commandPalette.classList.remove('hidden');
+                    elements.commandInput.focus();
+                }
+                if (e.key === 'Escape') {
+                    elements.commandPalette.classList.add('hidden');
+                    elements.settingsPanel.classList.add('hidden');
+                    elements.bookmarksPanel.classList.add('hidden');
+                    elements.passwordsPanel.classList.add('hidden');
+                    elements.historyPanel.classList.add('hidden');
+                    elements.quickHistory.classList.add('hidden');
+                }
             });
-        });
 
-        document.addEventListener('click', (e) => {
-            if (!bookmarksPanel.contains(e.target) && !document.getElementById('bookmarksBtn').contains(e.target)) {
-                bookmarksPanel.classList.add('hidden');
-            }
-            if (!menuPanel.contains(e.target) && !document.getElementById('menuBtn').contains(e.target)) {
-                menuPanel.classList.add('hidden');
-            }
-        });
+            // إعداد الأحداث
+            document.getElementById('newTabBtn').addEventListener('click', () => createNewTab());
+            document.getElementById('goBtn').addEventListener('click', navigateToUrl);
+            document.getElementById('refreshBtn').addEventListener('click', refreshPage);
+            document.getElementById('backBtn').addEventListener('click', goBack);
+            document.getElementById('forwardBtn').addEventListener('click', goForward);
+            document.getElementById('bookmarksBtn').addEventListener('click', toggleBookmarks);
+            document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
+            document.getElementById('passwordsBtn').addEventListener('click', togglePasswords);
+            document.getElementById('historyBtn').addEventListener('click', toggleHistory);
+            document.getElementById('commandBtn').addEventListener('click', () => {
+                elements.commandPalette.classList.remove('hidden');
+                elements.commandInput.focus();
+            });
+            document.getElementById('closeSettings').addEventListener('click', () => {
+                elements.settingsPanel.classList.add('hidden');
+                saveData();
+            });
+            document.getElementById('closePasswords').addEventListener('click', () => {
+                elements.passwordsPanel.classList.add('hidden');
+            });
+            document.getElementById('historyDropdown').addEventListener('click', showQuickHistory);
+            document.getElementById('clearHistory').addEventListener('click', () => {
+                history = [];
+                saveData();
+                elements.historyPanel.classList.add('hidden');
+                MessageSystem.show('تم مسح سجل التصفح', 'success');
+            });
+            document.getElementById('urlInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') navigateToUrl();
+            });
+            document.getElementById('historySearch').addEventListener('input', (e) => {
+                searchHistory(e.target.value);
+            });
 
-        setTimeout(() => {
-            updateTabTitle(1, "Google");
-        }, 2000);
+            // أحداث الإشارات المرجعية
+            document.querySelectorAll('.bookmark-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const url = item.getAttribute('data-url');
+                    elements.urlInput.value = url;
+                    navigateToUrl();
+                    elements.bookmarksPanel.classList.add('hidden');
+                    MessageSystem.show('تم فتح الإشارة المرجعية', 'success');
+                });
+            });
 
-        renderTabs();
+            // إغلاق النوافذ عند النقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!elements.bookmarksPanel.contains(e.target) && !document.getElementById('bookmarksBtn').contains(e.target)) {
+                    elements.bookmarksPanel.classList.add('hidden');
+                }
+                if (!elements.settingsPanel.contains(e.target) && !document.getElementById('settingsBtn').contains(e.target)) {
+                    elements.settingsPanel.classList.add('hidden');
+                }
+                if (!elements.passwordsPanel.contains(e.target) && !document.getElementById('passwordsBtn').contains(e.target)) {
+                    elements.passwordsPanel.classList.add('hidden');
+                }
+                if (!elements.historyPanel.contains(e.target) && !document.getElementById('historyBtn').contains(e.target)) {
+                    elements.historyPanel.classList.add('hidden');
+                }
+                if (!elements.quickHistory.contains(e.target) && !document.getElementById('historyDropdown').contains(e.target)) {
+                    elements.quickHistory.classList.add('hidden');
+                }
+                if (!elements.commandPalette.contains(e.target) && !document.getElementById('commandBtn').contains(e.target)) {
+                    elements.commandPalette.classList.add('hidden');
+                }
+            });
+
+            // تحديث عنوان الصفحة عند التحميل
+            elements.webView.addEventListener('load', () => {
+                const activeTab = tabs.find(t => t.id === activeTabId);
+                if (activeTab) {
+                    try {
+                        const title = elements.webView.contentDocument?.title || activeTab.url;
+                        updateTabTitle(activeTabId, title);
+                        elements.urlInput.value = activeTab.url;
+                        addToHistory(activeTab.url, title);
+                        updateSecurityIcon(activeTab.url);
+                    } catch (e) {
+                        updateTabTitle(activeTabId, "الصفحة الرئيسية");
+                    }
+                }
+            });
+
+            // البدء
+            updateSettings();
+            renderTabs();
+            switchToTab(activeTabId);
+        }
     </script>
 </body>
 </html>
